@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.WaitingRoomController">
+    <Label text="대기방" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="플레이어 1:"/>
+        <Label fx:id="player1Label" text="대기 중..." style="-fx-font-size: 16px;"/>
+        <Label text="플레이어 2:"/>
+        <Label fx:id="player2Label" text="대기 중..." style="-fx-font-size: 16px;"/>
+        <Label text="플레이어 3:"/>
+        <Label fx:id="player3Label" text="대기 중..." style="-fx-font-size: 16px;"/>
+        <Label text="플레이어 4:"/>
+        <Label fx:id="player4Label" text="대기 중..." style="-fx-font-size: 16px;"/>
+    </VBox>
+    <TextArea fx:id="chatArea" editable="false" prefHeight="200" prefWidth="400" wrapText="true"/>
+</VBox>

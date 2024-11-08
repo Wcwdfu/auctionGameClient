@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.AuctionClientController">
+    <HBox spacing="10">
+        <Label text="포트 번호:"/>
+        <TextField fx:id="portField" text="12345"/>
+        <Label text="이름:"/>
+        <TextField fx:id="nameField"/>
+        <Button fx:id="connectButton" text="서버 연결" onAction="#connectToServer"/>
+    </HBox>
+
+    <!-- 경매 및 메시지 영역 -->
+    <TextArea fx:id="messageArea" editable="false" prefHeight="300" prefWidth="600" />
+
+    <!-- 이미지 표시 영역 -->
+    <ImageView fx:id="goodsImageView" fitWidth="100" fitHeight="100"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="participateButton" text="경매 응찰" onAction="#sendParticipateRequest" disable="true"/>
+        <Button fx:id="notParticipateButton" text="경매 불응찰" onAction="#sendNotParticipateRequest" disable="true"/>
+        <Button fx:id="bid1Button" text="1원" onAction="#sendBid1" disable="true"/>
+        <Button fx:id="bid5Button" text="5원" onAction="#sendBid5" disable="true"/>
+    </HBox>
+
+    <!-- 채팅 영역 -->
+    <VBox spacing="10" alignment="CENTER">
+        <TextArea fx:id="chatArea" editable="false" prefHeight="200" prefWidth="600" />
+        <HBox spacing="10">
+            <TextField fx:id="chatInputField" promptText="메시지를 입력하세요"/>
+            <Button text="전송" onAction="#sendChatMessage"/>
+        </HBox>
+    </VBox>
+</VBox>

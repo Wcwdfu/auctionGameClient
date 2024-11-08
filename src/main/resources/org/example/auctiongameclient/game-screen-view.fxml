@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.GameScreenController">
+    <Label text="경매 게임" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="최고 입찰 정보:"/>
+        <Label fx:id="highestBidLabel" text="최고 입찰: -"/>
+    </HBox>
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="현재 플레이어:"/>
+        <Label fx:id="currentPlayerLabel" text="잔액: -"/>
+    </HBox>
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="participateButton" text="경매 참가" onAction="#participateInAuction"/>
+        <Button fx:id="bid1Button" text="1원 입찰" onAction="#placeBid1"/>
+        <Button fx:id="bid5Button" text="5원 입찰" onAction="#placeBid5"/>
+    </HBox>
+    <TextArea fx:id="messageArea" editable="false" prefHeight="300" prefWidth="400" wrapText="true"/>
+</VBox>
