@@ -1,5 +1,6 @@
 package org.example.auctiongameclient.Controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
@@ -28,7 +29,9 @@ public class ConnectController {
     private void connectToServer() {
         String port = portField.getText();
         String name = nameField.getText();
-
+        System.out.println("port = " + port);
+        System.out.println("name = " + name);
+        
         // 포트 번호와 이름이 입력되지 않았을 경우 경고
         if (port.isEmpty() || name.isEmpty()) {
             showAlert("포트 번호와 이름을 모두 입력하세요.");
@@ -36,31 +39,69 @@ public class ConnectController {
         }
 
         try {
-            // 서버에 연결
-            socket = new Socket("localhost", Integer.parseInt(port)); // 예시로 localhost 사용
+
+            socket = new Socket("localhost", Integer.parseInt(port));
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new Scanner(socket.getInputStream());
 
             // 서버에 이름 전송
+            //MatchingRequest matchingRequest = new MatchingRequest(name);
             out.println(name);
 
+
             // 연결 성공 시 대기방 화면으로 전환
-            openWaitingRoom(name);
+            openWaitingRoom(in);
         } catch (IOException e) {
             showAlert("서버에 연결할 수 없습니다: " + e.getMessage());
         }
     }
 
-    private void openWaitingRoom(String userName) {
+    private void openWaitingRoom(Scanner scanner) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/auctiongameclient/waiting-room-view.fxml"));
             Parent root = loader.load();
 
             WaitingRoomController waitingRoomController = loader.getController();
-            waitingRoomController.initializeUserName(userName);
+
+            //waitingRoomController.initializeUserName(userName);
 
             Stage stage = (Stage) portField.getScene().getWindow();
             stage.setScene(new Scene(root));
+
+            new Thread(() -> {
+                while (scanner.hasNextLine()) {
+                    String input = scanner.nextLine();
+                    Platform.runLater(() -> {
+                        if(input.startsWith("Matching;")){
+                            String remainingText = input.substring("Matching;".length());
+                            String[] userNames = remainingText.split(",");
+                            waitingRoomController.modifyView(userNames);
+                        }
+                        else if(input.startsWith("MatchingFinished;")){
+                            String remainingText = input.substring("MatchingFinished;".length());
+                            int count= Integer.parseInt(remainingText);
+                            waitingRoomController.countDownView(count);
+                        }
+                        System.out.println("User Input: " + input);
+                        // 필요한 경우 추가 로직 수행
+                    });
+                }
+            }).start();
+
+            new Thread(()->{
+                while(scanner.hasNextLine()){
+                    String input = scanner.nextLine();
+                    Platform.runLater(() -> {
+                        if(input.startsWith("MatchingFinished;")){
+                            String remainingText = input.substring("MatchingFinished;".length());
+                            int count= Integer.parseInt(remainingText);
+                            waitingRoomController.countDownView(count);
+                        }
+                        System.out.println("User Input: " + input);
+                        // 필요한 경우 추가 로직 수행
+                    });
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +109,7 @@ public class ConnectController {
 
     private void showAlert(String message) {
         Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("연결 오류");
+        alert.setTitle("input Error");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

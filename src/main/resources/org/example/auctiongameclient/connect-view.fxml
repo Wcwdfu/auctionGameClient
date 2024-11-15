@@ -7,7 +7,7 @@
     <Label text="서버 접속"/>
     <HBox spacing="10" alignment="CENTER">
         <Label text="포트 번호:"/>
-        <TextField fx:id="portField" promptText="포트 번호 입력"/>
+        <TextField fx:id="portField" promptText="포트 번호 입력" text="12345"/>
     </HBox>
     <HBox spacing="10" alignment="CENTER">
         <Label text="이름:"/>
