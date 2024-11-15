@@ -1,6 +1,5 @@
 package org.example.auctiongameclient.Controller;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -8,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import org.example.auctiongameclient.AuctionManager;
 import org.example.auctiongameclient.ChatManager;
+import org.example.auctiongameclient.utils.UIUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -38,7 +38,7 @@ public class AuctionClientController {
     @FXML
     private Button bid5Button;
     @FXML
-    private ImageView goodsImageView; //이미지
+    private ImageView goodsImageView;
 
     private BufferedReader in;
     private PrintWriter out;
@@ -49,31 +49,37 @@ public class AuctionClientController {
     private AuctionManager auctionManager;
     private ChatManager chatManager;
 
-    // 굿즈 이름과 이미지 파일 경로 매핑
     private Map<String, String> goodsImages;
     private Map<String, String> itemImages;
 
     public void initialize() {
+        initializeButtons();
+        initializeImages();
+        initializeChatInput();
+    }
+
+    private void initializeButtons() {
         participateButton.setDisable(true);
         notParticipateButton.setDisable(true);
         bid1Button.setDisable(true);
         bid5Button.setDisable(true);
+    }
 
-        // 굿즈 이미지 경로 매핑
+    private void initializeImages() {
         goodsImages = new HashMap<>();
         goodsImages.put("쿠", "/images/쿠.png");
         goodsImages.put("건구스", "/images/건구스.png");
         goodsImages.put("건덕이", "/images/건덕이.png");
         goodsImages.put("건붕이", "/images/건붕이.png");
 
-        // 아이템 이미지 경로 매핑
         itemImages = new HashMap<>();
         itemImages.put("건구스의 지원금", "/images/건구스의지원금.png");
         itemImages.put("황소의 분노", "/images/황소의분노.png");
         itemImages.put("일감호의 기적", "/images/일감호의기적.png");
         itemImages.put("스턴건", "/images/스턴건.png");
+    }
 
-        // 채팅 입력창에서 Enter 키를 누르면 메시지 전송
+    private void initializeChatInput() {
         chatInputField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 sendChatMessage();
@@ -95,23 +101,29 @@ public class AuctionClientController {
             Socket socket = new Socket(serverAddress, port);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
+
             messageArea.appendText("서버에 연결되었습니다.\n");
-            out.println(userName);  // 서버로 이름 전송
+            out.println(userName);
 
             auctionManager = new AuctionManager(out, messageArea);
             chatManager = new ChatManager(out, chatArea, chatInputField);
 
             executor.submit(this::receiveMessages);
 
-            connectButton.setDisable(true);
-            participateButton.setDisable(false);
-            notParticipateButton.setDisable(false);
-            bid1Button.setDisable(false);
-            bid5Button.setDisable(false);
+            updateUIAfterConnect();
         } catch (IOException e) {
             messageArea.appendText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
         }
     }
+
+    private void updateUIAfterConnect() {
+        connectButton.setDisable(true);
+        participateButton.setDisable(false);
+        notParticipateButton.setDisable(false);
+        bid1Button.setDisable(false);
+        bid5Button.setDisable(false);
+    }
+
 
     @FXML
     private void sendParticipateRequest() {
@@ -135,66 +147,54 @@ public class AuctionClientController {
 
     @FXML
     private void sendChatMessage() {
-        String message = chatInputField.getText().trim();
-        if (!message.isEmpty()) {
-            out.println("채팅 " + message);
-            chatInputField.clear();
-        }
+        chatManager.sendChatMessage();
     }
 
-    // 경매 품목에 따른 이미지 업데이트
-    private void updateAuctionItemImage(String itemName) {
-        String imagePath;
 
-        if (goodsImages.containsKey(itemName)) {
-            imagePath = goodsImages.get(itemName);
-        } else {
-            imagePath = itemImages.get(itemName);
-        }
-
-        if (imagePath != null) {
-            Image image = new Image(getClass().getResourceAsStream(imagePath));
-            goodsImageView.setImage(image);
-        } else {
-            goodsImageView.setImage(null); // 이미지가 없는 경우 초기화
-        }
-    }
-
-    //서버로부터 수신된 메세지에 따라 올바른 처리를 함
     private void receiveMessages() {
         try {
             String message;
             while ((message = in.readLine()) != null) {
                 final String msg = message;
-                Platform.runLater(() -> processMessage(msg)); // 메시지 처리를 별도 메서드로 분리
+                UIUtils.runOnUIThread(() -> processMessage(msg));
             }
         } catch (IOException e) {
-            Platform.runLater(() -> messageArea.appendText("서버와의 연결이 끊어졌습니다.\n"));
+            UIUtils.runOnUIThread(() -> messageArea.appendText("서버와의 연결이 끊어졌습니다.\n"));
         }
     }
+
 
     private void processMessage(String msg) {
         if (msg.startsWith("채팅 ")) {
-            handleChatMessage(msg.substring(3)); // 채팅 메시지 처리
+            chatManager.receiveChatMessage(msg.substring(3));
         } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
-            handleAuctionStartMessage(msg); // 경매 시작 메시지 처리
+            handleAuctionStartMessage(msg);
         } else {
-            handleGeneralMessage(msg); // 일반 메시지 처리
+            handleGeneralMessage(msg);
         }
     }
 
-    private void handleChatMessage(String content) {
-        chatArea.appendText(content + "\n");
-    }
 
     private void handleAuctionStartMessage(String msg) {
         String itemName = msg.substring(msg.lastIndexOf(":") + 2).trim();
-        updateAuctionItemImage(itemName); // 경매 품목 이미지 업데이트
-        messageArea.appendText(msg + "\n"); // 메시지도 출력
+        updateAuctionItemImage(itemName);
+        messageArea.appendText(msg + "\n");
     }
+
 
     private void handleGeneralMessage(String msg) {
         messageArea.appendText(msg + "\n");
     }
 
+
+    private void updateAuctionItemImage(String itemName) {
+        String imagePath = goodsImages.getOrDefault(itemName, itemImages.get(itemName));
+
+        if (imagePath != null) {
+            Image image = new Image(getClass().getResourceAsStream(imagePath));
+            goodsImageView.setImage(image);
+        } else {
+            goodsImageView.setImage(null);
+        }
+    }
 }
