@@ -161,26 +161,40 @@ public class AuctionClientController {
     }
 
     //서버로부터 수신된 메세지에 따라 올바른 처리를 함
-    //TODO 서버 - 클라이언트간 메세지로 주고받을지, json으로 해야할지 결정해야할듯 함
     private void receiveMessages() {
         try {
             String message;
             while ((message = in.readLine()) != null) {
                 final String msg = message;
-                Platform.runLater(() -> {
-                    if (msg.startsWith("채팅 ")) {
-                        chatArea.appendText(msg.substring(3) + "\n");
-                    } else {
-                        messageArea.appendText(msg + "\n");
-                        if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
-                            String itemName = msg.substring(msg.lastIndexOf(":") + 2).trim();
-                            updateAuctionItemImage(itemName); // 경매 품목 이미지 업데이트
-                        }
-                    }
-                });
+                Platform.runLater(() -> processMessage(msg)); // 메시지 처리를 별도 메서드로 분리
             }
         } catch (IOException e) {
             Platform.runLater(() -> messageArea.appendText("서버와의 연결이 끊어졌습니다.\n"));
         }
     }
+
+    private void processMessage(String msg) {
+        if (msg.startsWith("채팅 ")) {
+            handleChatMessage(msg.substring(3)); // 채팅 메시지 처리
+        } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
+            handleAuctionStartMessage(msg); // 경매 시작 메시지 처리
+        } else {
+            handleGeneralMessage(msg); // 일반 메시지 처리
+        }
+    }
+
+    private void handleChatMessage(String content) {
+        chatArea.appendText(content + "\n");
+    }
+
+    private void handleAuctionStartMessage(String msg) {
+        String itemName = msg.substring(msg.lastIndexOf(":") + 2).trim();
+        updateAuctionItemImage(itemName); // 경매 품목 이미지 업데이트
+        messageArea.appendText(msg + "\n"); // 메시지도 출력
+    }
+
+    private void handleGeneralMessage(String msg) {
+        messageArea.appendText(msg + "\n");
+    }
+
 }
