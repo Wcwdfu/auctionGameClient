@@ -1,6 +1,8 @@
 package org.example.auctiongameclient.Controller;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,6 +17,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+//배경음악기능 위한 라이브러리
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+//
 
 public class AuctionClientController {
     @FXML
@@ -39,12 +47,19 @@ public class AuctionClientController {
     private Button bid5Button;
     @FXML
     private ImageView goodsImageView; //이미지
+    
+    @FXML
+    private MediaView mediaView; //음악
+
+    MediaPlayer mediaPlayer;
+    Media media;
 
     private BufferedReader in;
     private PrintWriter out;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
     private final String serverAddress = "localhost";
     private String userName;
+    private Socket socket;
 
     private AuctionManager auctionManager;
     private ChatManager chatManager;
@@ -53,7 +68,7 @@ public class AuctionClientController {
     private Map<String, String> goodsImages;
     private Map<String, String> itemImages;
 
-    public void initialize() {
+    public void initialize() { //FXML파일이 로드된 후 JavaFX가 자동으로 호출하는 메서드
         participateButton.setDisable(true);
         notParticipateButton.setDisable(true);
         bid1Button.setDisable(true);
@@ -72,6 +87,18 @@ public class AuctionClientController {
         itemImages.put("황소의 분노", "/images/황소의분노.png");
         itemImages.put("일감호의 기적", "/images/일감호의기적.png");
         itemImages.put("스턴건", "/images/스턴건.png");
+        
+//        String path = new File("src/main/resources/bgms/BOX 15.mp3").getAbsolutePath();
+        
+//        media = new Media(new File(path).toURI().toString());
+//        mediaPlayer = new MediaPlayer(media);
+//        mediaView.setMediaPlayer(mediaPlayer);
+//        mediaPlayer.setAutoPlay(true);
+//        DoubleProperty width = mediaView.fitWidthProperty();
+//        DoubleProperty height = mediaView.fitHeightProperty();
+//        width.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
+//        height.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
+
 
         // 채팅 입력창에서 Enter 키를 누르면 메시지 전송
         chatInputField.setOnKeyPressed(event -> {
@@ -81,18 +108,49 @@ public class AuctionClientController {
         });
     }
 
+//    @FXML
+//    private void connectToServer() {
+//        int port = Integer.parseInt(portField.getText());
+//        userName = nameField.getText().trim();
+//
+//        if (userName.isEmpty()) {
+//            messageArea.appendText("이름을 입력하세요.\n");
+//            return;
+//        }
+//
+//        try {
+//            Socket socket = new Socket(serverAddress, port);
+//            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            out = new PrintWriter(socket.getOutputStream(), true);
+//            messageArea.appendText("서버에 연결되었습니다.\n");
+//            out.println(userName);  // 서버로 이름 전송
+//
+//            auctionManager = new AuctionManager(out, messageArea);
+//            chatManager = new ChatManager(out, chatArea, chatInputField);
+//
+//            executor.submit(this::receiveMessages);
+//
+//            connectButton.setDisable(true);
+//            participateButton.setDisable(false);
+//            notParticipateButton.setDisable(false);
+//            bid1Button.setDisable(false);
+//            bid5Button.setDisable(false);
+//        } catch (IOException e) {
+//            messageArea.appendText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
+//        }
+//    }
+
+
+
+    public void setSocketAndName(Socket socket, String userName) {
+        this.socket = socket;
+        this.userName = userName;
+    }
+
     @FXML
     private void connectToServer() {
-        int port = Integer.parseInt(portField.getText());
-        userName = nameField.getText().trim();
-
-        if (userName.isEmpty()) {
-            messageArea.appendText("이름을 입력하세요.\n");
-            return;
-        }
 
         try {
-            Socket socket = new Socket(serverAddress, port);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             messageArea.appendText("서버에 연결되었습니다.\n");

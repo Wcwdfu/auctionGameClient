@@ -9,9 +9,10 @@ import java.io.IOException;
 public class AuctionClientApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AuctionClientApplication.class.getResource("auction-client-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle("Auction Client");
+//        FXMLLoader fxmlLoader = new FXMLLoader(AuctionClientApplication.class.getResource("auction-client-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(AuctionClientApplication.class.getResource("main-menu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 880, 600);
+        stage.setTitle("BID OR NOT");
         stage.setScene(scene);
         stage.show();
     }
