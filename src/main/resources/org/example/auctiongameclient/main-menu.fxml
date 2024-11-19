@@ -35,27 +35,27 @@
 <!--   </BorderPane>-->
 <!--</BorderPane>-->
 
-<VBox prefHeight="622.0" prefWidth="878.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.MainMenuController">
-   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="878.0">
-      <center>
-         <AnchorPane prefHeight="692.0" prefWidth="878.0" styleClass="main-bg" stylesheets="@../../../css/main-menu.css" BorderPane.alignment="CENTER">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.MainMenuController">
+   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
+      <left>
+         <AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="main-bg" stylesheets="@../../../css/main-menu.css" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                <Insets />
             </BorderPane.margin>
             <children>
-               <Pane layoutX="179.0" layoutY="394.0" prefHeight="142.0" prefWidth="504.0" styleClass="inner-bg" stylesheets="@../../../css/main-menu.css">
+               <Pane layoutX="198.0" layoutY="391.0" prefHeight="142.0" prefWidth="504.0" styleClass="inner-bg" stylesheets="@../../../css/main-menu.css">
                   <children>
                      <Label fx:id="alertMessage" layoutX="105.0" layoutY="111.0" prefHeight="23.0" prefWidth="298.0" styleClass="connection-check" stylesheets="@../../../css/main-menu.css" textFill="#d31111" />
                   </children></Pane>
-               <Label layoutX="206.0" layoutY="423.0" prefHeight="37.0" prefWidth="84.0" text="port number" />
-               <TextField fx:id="portField" layoutX="299.0" layoutY="427.0" prefHeight="28.0" prefWidth="260.0" />
-               <Label layoutX="206.0" layoutY="462.0" prefHeight="37.0" prefWidth="76.0" text="user name" />
-               <TextField fx:id="nameField" layoutX="299.0" layoutY="467.0" prefHeight="28.0" prefWidth="260.0" />
-               <Button fx:id="connectButton" layoutX="581.0" layoutY="425.0" mnemonicParsing="false" onAction="#connectToServer" prefHeight="71.0" prefWidth="71.0" stylesheets="@../../../css/main-menu.css" text="Connect" />
-               <Pane layoutX="157.0" layoutY="14.0" prefHeight="314.0" prefWidth="548.0" styleClass="title" stylesheets="@../../../css/main-menu.css" />
+               <Label layoutX="225.0" layoutY="420.0" prefHeight="37.0" prefWidth="84.0" text="port number" />
+               <TextField fx:id="portField" layoutX="318.0" layoutY="424.0" prefHeight="28.0" prefWidth="260.0" />
+               <Label layoutX="225.0" layoutY="459.0" prefHeight="37.0" prefWidth="76.0" text="user name" />
+               <TextField fx:id="nameField" layoutX="318.0" layoutY="464.0" prefHeight="28.0" prefWidth="260.0" />
+               <Button fx:id="connectButton" layoutX="600.0" layoutY="422.0" mnemonicParsing="false" onAction="#connectToServer" prefHeight="71.0" prefWidth="71.0" stylesheets="@../../../css/main-menu.css" text="Connect" />
+               <Pane layoutX="176.0" layoutY="14.0" prefHeight="314.0" prefWidth="548.0" styleClass="title" stylesheets="@../../../css/main-menu.css" />
             </children>
          </AnchorPane>
-      </center>
+      </left>
 <!--      prefHeight="400.0" prefWidth="600.0"-->
    </BorderPane>
 <!--   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">-->

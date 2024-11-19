@@ -64,7 +64,6 @@ public class MainMenuController {
 
     @FXML
     private void connectToServer(ActionEvent event) {
-        System.out.println("flag check");
         int port = Integer.parseInt(portField.getText());
         userName = nameField.getText().trim();
         alertMessage.setText("안녕하세요");
@@ -86,7 +85,6 @@ public class MainMenuController {
     }
 
     public void switchToGameScreen(ActionEvent event, Socket socket) throws IOException {
-        System.out.println("flag check 22");
         FXMLLoader loader = new FXMLLoader(AuctionClientApplication.class.getResource("auction-client-view.fxml"));
         try {
             root = loader.load();

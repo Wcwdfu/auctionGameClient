@@ -100,6 +100,10 @@ public class AuctionClientController {
 //        height.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
 
 
+        Platform.runLater(() -> {
+            getServerMessage(); // 초기화 이후 실행될 메서드
+        });
+
         // 채팅 입력창에서 Enter 키를 누르면 메시지 전송
         chatInputField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -148,7 +152,7 @@ public class AuctionClientController {
     }
 
     @FXML
-    private void connectToServer() {
+    private void getServerMessage() {
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -161,7 +165,6 @@ public class AuctionClientController {
 
             executor.submit(this::receiveMessages);
 
-            connectButton.setDisable(true);
             participateButton.setDisable(false);
             notParticipateButton.setDisable(false);
             bid1Button.setDisable(false);
