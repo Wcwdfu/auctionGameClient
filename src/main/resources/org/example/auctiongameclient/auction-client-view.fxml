@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -7,11 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.media.MediaView?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="font" stylesheets="@../../../css/auction-client-view.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.AuctionClientController">
    <children>
-        <TextArea fx:id="messageArea" editable="false" prefHeight="400.0" prefWidth="450.0" />
+        <TextArea fx:id="messageArea" editable="false" prefHeight="400.0" prefWidth="450.0" styleClass="messageArea" stylesheets="@../../../css/auction-client-view.css" />
    
           <!-- 이미지 표시 영역 -->
        <ImageView fx:id="goodsImageView" fitHeight="288.0" fitWidth="291.0" layoutX="450.0" />
@@ -22,17 +23,26 @@
                <Button onAction="#sendChatMessage" prefHeight="45.0" prefWidth="136.0" text="전송" />
          </children>
        </HBox>
-      <VBox layoutX="741.0" prefHeight="288.0" prefWidth="161.0">
+      <VBox layoutX="741.0" prefHeight="288.0" prefWidth="161.0" styleClass="font" stylesheets="@../../../css/auction-client-view.css">
          <children>
-              <Button fx:id="participateButton" disable="true" onAction="#sendParticipateRequest" prefHeight="58.0" prefWidth="161.0" text="경매 응찰" />
-              <Button fx:id="notParticipateButton" disable="true" onAction="#sendNotParticipateRequest" prefHeight="64.0" prefWidth="161.0" text="경매 불응찰" />
-              <Button fx:id="bid5Button" disable="true" onAction="#sendBid5" prefHeight="54.0" prefWidth="161.0" text="5원" />
-              <Button fx:id="bid1Button" disable="true" onAction="#sendBid1" prefHeight="54.0" prefWidth="161.0" text="1원" />
-            <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="161.0" text="게임종료" />
+              <Button fx:id="participateButton" disable="true" onAction="#sendParticipateRequest" prefHeight="58.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="경매 응찰" />
+              <Button fx:id="notParticipateButton" disable="true" onAction="#sendNotParticipateRequest" prefHeight="64.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="경매 불응찰" />
+              <Button fx:id="bid5Button" disable="true" onAction="#sendBid5" prefHeight="54.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="5원" />
+              <Button fx:id="bid1Button" disable="true" onAction="#sendBid1" prefHeight="54.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="1원" />
+            <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="게임종료" />
          </children>
       </VBox>
       <TextArea fx:id="chatArea" layoutX="-5.0" layoutY="400.0" prefHeight="177.0" prefWidth="900.0" />
-      <TextArea layoutX="450.0" layoutY="285.0" prefHeight="115.0" prefWidth="291.0" />
-      <HBox layoutX="741.0" layoutY="285.0" prefHeight="115.0" prefWidth="161.0" styleClass="music-box" stylesheets="@../../../css/auction-client-view.css" />
+<!--       플레이어 자신이 낙찰받은 아이템과 자본금 표시-->
+      <TextArea disable="true" layoutX="450.0" layoutY="285.0" prefHeight="115.0" prefWidth="291.0" />
+<!--       -->
+      <HBox layoutX="741.0" layoutY="285.0" prefHeight="115.0" prefWidth="161.0" styleClass="music-box" stylesheets="@../../../css/auction-client-view.css">
+         <children>
+            <Button fx:id="musicButton" mnemonicParsing="false" onAction="#musicPlayPause" prefHeight="60.0" prefWidth="58.0" styleClass="pauseButton" stylesheets="@../../../css/auction-client-view.css">
+               <HBox.margin>
+                  <Insets left="50.0" top="25.0" />
+               </HBox.margin></Button>
+         </children></HBox>
+      <MediaView fx:id="mediaView" />
    </children>
 </AnchorPane>

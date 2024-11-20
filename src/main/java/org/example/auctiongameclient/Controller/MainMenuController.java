@@ -54,12 +54,12 @@ public class MainMenuController {
     Media media;
 
     public void initialize() {
-        String path = new File("src/main/resources/bgms/BOX 15.mp3").getAbsolutePath();
-        System.out.println("안녕하세요");
+        String path = new File("src/main/resources/bgms/클로버의 근면.mp3").getAbsolutePath();
         media = new Media(new File(path).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     @FXML
@@ -95,6 +95,7 @@ public class MainMenuController {
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
+            mediaPlayer.stop();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

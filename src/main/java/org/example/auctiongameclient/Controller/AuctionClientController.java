@@ -3,11 +3,13 @@ package org.example.auctiongameclient.Controller;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 import org.example.auctiongameclient.AuctionManager;
 import org.example.auctiongameclient.ChatManager;
 
@@ -46,13 +48,17 @@ public class AuctionClientController {
     @FXML
     private Button bid5Button;
     @FXML
+    private Button musicButton;
+    @FXML
     private ImageView goodsImageView; //이미지
     
     @FXML
     private MediaView mediaView; //음악
-
     MediaPlayer mediaPlayer;
     Media media;
+
+    private Boolean musicFlag = true;
+    private ReadOnlyObjectProperty<Duration> currentMusicTime;
 
     private BufferedReader in;
     private PrintWriter out;
@@ -88,16 +94,14 @@ public class AuctionClientController {
         itemImages.put("일감호의 기적", "/images/일감호의기적.png");
         itemImages.put("스턴건", "/images/스턴건.png");
         
-//        String path = new File("src/main/resources/bgms/BOX 15.mp3").getAbsolutePath();
-        
-//        media = new Media(new File(path).toURI().toString());
-//        mediaPlayer = new MediaPlayer(media);
-//        mediaView.setMediaPlayer(mediaPlayer);
-//        mediaPlayer.setAutoPlay(true);
-//        DoubleProperty width = mediaView.fitWidthProperty();
-//        DoubleProperty height = mediaView.fitHeightProperty();
-//        width.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
-//        height.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
+        //배경음악기능
+        String path = new File("src/main/resources/bgms/BOX 15.mp3").getAbsolutePath();
+        media = new Media(new File(path).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+        mediaView.setMediaPlayer(mediaPlayer);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+
 
 
         Platform.runLater(() -> {
@@ -171,6 +175,24 @@ public class AuctionClientController {
             bid5Button.setDisable(false);
         } catch (IOException e) {
             messageArea.appendText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
+        }
+    }
+
+    @FXML
+    private void musicPlayPause() {
+        ImageView imageView;
+
+        if (musicFlag) {
+            musicFlag = false;
+            musicButton.getStyleClass().removeAll("playButton");
+            musicButton.getStyleClass().add("pauseButton");
+            mediaPlayer.pause();
+        } else {
+            musicFlag = true;
+            musicButton.getStyleClass().removeAll("pauseButton");
+            musicButton.getStyleClass().add("playButton");
+
+            mediaPlayer.play();
         }
     }
 
