@@ -8,4 +8,6 @@ module org.example.auctiongameclient {
     exports org.example.auctiongameclient;
     exports org.example.auctiongameclient.Controller;
     opens org.example.auctiongameclient.Controller to javafx.fxml;
+    exports org.example.auctiongameclient.domain;
+    opens org.example.auctiongameclient.domain to javafx.fxml;
 }

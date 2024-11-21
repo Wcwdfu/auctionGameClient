@@ -51,6 +51,7 @@ public class WaitingRoomController {
                 FXMLLoader loader = new FXMLLoader(AuctionClientApplication.class.getResource("auction-client-view.fxml"));
                 Parent root = loader.load();
 
+
                 // 새 Scene과 Stage로 화면을 전환
                 Stage stage = (Stage) player1Label.getScene().getWindow();  // 현재 화면에서 Stage를 가져옴
                 stage.setScene(new Scene(root));  // 새 Scene을 설정

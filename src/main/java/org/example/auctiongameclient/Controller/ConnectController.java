@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import org.example.auctiongameclient.AuctionClientApplication;
+import org.example.auctiongameclient.domain.User;
+import org.example.auctiongameclient.domain.UserFactory;
 
 public class ConnectController {
     @FXML
@@ -48,6 +51,8 @@ public class ConnectController {
             //MatchingRequest matchingRequest = new MatchingRequest(name);
             out.println(name);
 
+            //유저 등록
+            UserFactory.initialize(new User(name),socket);
 
             // 연결 성공 시 대기방 화면으로 전환
             openWaitingRoom(in);
@@ -88,20 +93,6 @@ public class ConnectController {
                 }
             }).start();
 
-            new Thread(()->{
-                while(scanner.hasNextLine()){
-                    String input = scanner.nextLine();
-                    Platform.runLater(() -> {
-                        if(input.startsWith("MatchingFinished;")){
-                            String remainingText = input.substring("MatchingFinished;".length());
-                            int count= Integer.parseInt(remainingText);
-                            waitingRoomController.countDownView(count);
-                        }
-                        System.out.println("User Input: " + input);
-                        // 필요한 경우 추가 로직 수행
-                    });
-                }
-            });
         } catch (Exception e) {
             e.printStackTrace();
         }

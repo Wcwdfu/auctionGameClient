@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.example.auctiongameclient.domain.UserFactory;
 
 public class AuctionClientController {
     @FXML
@@ -40,6 +41,7 @@ public class AuctionClientController {
     @FXML
     private ImageView goodsImageView; //이미지
 
+    private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -54,10 +56,10 @@ public class AuctionClientController {
     private Map<String, String> itemImages;
 
     public void initialize() {
-        participateButton.setDisable(true);
+        /*participateButton.setDisable(true);
         notParticipateButton.setDisable(true);
         bid1Button.setDisable(true);
-        bid5Button.setDisable(true);
+        bid5Button.setDisable(true);*/
 
         // 굿즈 이미지 경로 매핑
         goodsImages = new HashMap<>();
@@ -79,6 +81,29 @@ public class AuctionClientController {
                 sendChatMessage();
             }
         });
+
+        try {
+            //Socket socket = new Socket(serverAddress, port);
+            socket= UserFactory.MY_SOCKET;
+            userName=UserFactory.MY_INSTANCE.getName();
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+            messageArea.appendText("서버에 연결되었습니다.\n");
+            out.println(userName);  // 서버로 이름 전송
+
+            auctionManager = new AuctionManager(out, messageArea);
+            chatManager = new ChatManager(out, chatArea, chatInputField);
+
+            executor.submit(this::receiveMessages);
+
+            connectButton.setDisable(true);
+            participateButton.setDisable(false);
+            notParticipateButton.setDisable(false);
+            bid1Button.setDisable(false);
+            bid5Button.setDisable(false);
+        } catch (IOException e) {
+            messageArea.appendText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
+        }
     }
 
     @FXML
@@ -182,5 +207,13 @@ public class AuctionClientController {
         } catch (IOException e) {
             Platform.runLater(() -> messageArea.appendText("서버와의 연결이 끊어졌습니다.\n"));
         }
+    }
+
+    public void setUser(String userName) {
+        this.userName=userName;
+    }
+
+    public void setSocket(Socket socket){
+        this.socket=socket;
     }
 }
