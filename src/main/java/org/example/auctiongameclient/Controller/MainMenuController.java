@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -54,7 +55,7 @@ public class MainMenuController {
     Media media;
 
     public void initialize() {
-        String path = new File("src/main/resources/bgms/클로버의 근면.mp3").getAbsolutePath();
+        String path = new File("src/main/resources/bgms/Billiards - Wii Play.mp3").getAbsolutePath();
         media = new Media(new File(path).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaView.setMediaPlayer(mediaPlayer);

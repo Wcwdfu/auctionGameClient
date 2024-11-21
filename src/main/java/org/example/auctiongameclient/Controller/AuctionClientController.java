@@ -1,6 +1,8 @@
 package org.example.auctiongameclient.Controller;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -9,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 import org.example.auctiongameclient.AuctionManager;
 import org.example.auctiongameclient.ChatManager;
@@ -51,7 +54,15 @@ public class AuctionClientController {
     private Button musicButton;
     @FXML
     private ImageView goodsImageView; //이미지
-    
+    @FXML
+    private HBox musicBox;
+    @FXML
+    private Slider volumeSlider;
+
+    @FXML
+    private ImageView gifImageView;
+    private Image gifImage;
+
     @FXML
     private MediaView mediaView; //음악
     MediaPlayer mediaPlayer;
@@ -102,6 +113,17 @@ public class AuctionClientController {
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
+        volumeSlider.setValue(mediaPlayer.getVolume() * 100);
+        volumeSlider.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                mediaPlayer.setVolume(volumeSlider.getValue() / 100);
+            }
+        });
+
+
+//        gifImage = new Image(getClass().getResource("/images/sound.gif").toExternalForm(), true);
+//        gifImageView.setImage(gifImage);
 
 
         Platform.runLater(() -> {
@@ -115,38 +137,6 @@ public class AuctionClientController {
             }
         });
     }
-
-//    @FXML
-//    private void connectToServer() {
-//        int port = Integer.parseInt(portField.getText());
-//        userName = nameField.getText().trim();
-//
-//        if (userName.isEmpty()) {
-//            messageArea.appendText("이름을 입력하세요.\n");
-//            return;
-//        }
-//
-//        try {
-//            Socket socket = new Socket(serverAddress, port);
-//            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            out = new PrintWriter(socket.getOutputStream(), true);
-//            messageArea.appendText("서버에 연결되었습니다.\n");
-//            out.println(userName);  // 서버로 이름 전송
-//
-//            auctionManager = new AuctionManager(out, messageArea);
-//            chatManager = new ChatManager(out, chatArea, chatInputField);
-//
-//            executor.submit(this::receiveMessages);
-//
-//            connectButton.setDisable(true);
-//            participateButton.setDisable(false);
-//            notParticipateButton.setDisable(false);
-//            bid1Button.setDisable(false);
-//            bid5Button.setDisable(false);
-//        } catch (IOException e) {
-//            messageArea.appendText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
-//        }
-//    }
 
 
 
@@ -186,11 +176,17 @@ public class AuctionClientController {
             musicFlag = false;
             musicButton.getStyleClass().removeAll("playButton");
             musicButton.getStyleClass().add("pauseButton");
+            musicBox.getStyleClass().removeAll("music-box-playing");
+            musicBox.getStyleClass().add("music-box-paused");
+
             mediaPlayer.pause();
         } else {
             musicFlag = true;
             musicButton.getStyleClass().removeAll("pauseButton");
             musicButton.getStyleClass().add("playButton");
+
+            musicBox.getStyleClass().removeAll("music-box-paused");
+            musicBox.getStyleClass().add("music-box-playing");
 
             mediaPlayer.play();
         }

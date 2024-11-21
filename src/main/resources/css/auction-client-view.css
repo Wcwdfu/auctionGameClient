@@ -1,24 +1,32 @@
-.music-box {
+.music-box-playing {
     -fx-background-position: center center;
-    -fx-background-size: cover;
+    -fx-background-size: 80%;
+    -fx-background-image: url(../images/sound.gif);
+}
+
+.music-box-paused {
+    -fx-background-position: center center;
+    -fx-background-size: 80%;
+    -fx-background-image: url(../images/sound.png);
 }
 
 .playButton {
     -fx-background-image: url(../images/play-icon.png);
     -fx-background-position: center center;
     -fx-background-size: contain;
-    -fx-background-radius: 25;
-    -fx-pref-width: 50;
-    -fx-pref-height: 50;
+    /*-fx-background-radius: 25;*/
+    /*-fx-pref-width: 50;*/
+    /*-fx-pref-height: 50;*/
 }
 
 .pauseButton {
     -fx-background-image: url(../images/pause-icon.png);
     -fx-background-position: center center;
     -fx-background-size: contain;
-    -fx-background-radius: 25;
-    -fx-pref-width: 50;
-    -fx-pref-height: 50;
+    -fx-background-repeat: no-repeat;
+    /*-fx-background-radius: 25;*/
+    /*-fx-pref-width: 50;*/
+    /*-fx-pref-height: 50;*/
 }
 
 .font {
@@ -33,7 +41,7 @@
 }
 
 .button {
-
+    -fx-font-size:10pt;
     -fx-cursor: hand;
 }
 
