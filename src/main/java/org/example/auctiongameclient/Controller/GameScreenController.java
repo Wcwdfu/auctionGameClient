@@ -36,7 +36,6 @@ public class GameScreenController {
     // 경매에 참여하는 메서드
     @FXML
     private void participateInAuction() {
-        messageArea.appendText(userName + "님이 경매에 참가하였습니다.\n");
         participateButton.setDisable(true);  // 한 번 참가하면 버튼 비활성화
     }
 

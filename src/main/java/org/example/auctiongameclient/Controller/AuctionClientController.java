@@ -105,7 +105,7 @@ public class AuctionClientController {
             messageArea.appendText("서버에 연결되었습니다.\n");
             out.println(userName);
 
-            auctionManager = new AuctionManager(out, messageArea);
+            auctionManager = new AuctionManager(out, messageArea, chatArea);
             chatManager = new ChatManager(out, chatArea, chatInputField);
 
             executor.submit(this::receiveMessages);
@@ -170,7 +170,7 @@ public class AuctionClientController {
         } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
             handleAuctionStartMessage(msg);
         } else {
-            handleGeneralMessage(msg);
+            handleMinerMessage(msg);
         }
     }
 
@@ -184,6 +184,10 @@ public class AuctionClientController {
 
     private void handleGeneralMessage(String msg) {
         messageArea.appendText(msg + "\n");
+    }
+
+    private void handleMinerMessage(String msg) {
+        chatArea.appendText(msg+"\n");
     }
 
 
