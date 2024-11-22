@@ -1,5 +1,6 @@
 package org.example.auctiongameclient.Controller;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -14,7 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import org.example.auctiongameclient.AuctionClientApplication;
 import org.example.auctiongameclient.domain.User;
 import org.example.auctiongameclient.domain.UserFactory;
 
@@ -74,7 +74,9 @@ public class ConnectController {
             stage.setScene(new Scene(root));
 
             new Thread(() -> {
-                while (scanner.hasNextLine()) {
+                AtomicBoolean bool= new AtomicBoolean(true);
+                while (bool.get()) {
+                    boolean b = scanner.hasNextLine();
                     String input = scanner.nextLine();
                     Platform.runLater(() -> {
                         if(input.startsWith("Matching;")){
@@ -85,12 +87,17 @@ public class ConnectController {
                         else if(input.startsWith("MatchingFinished;")){
                             String remainingText = input.substring("MatchingFinished;".length());
                             int count= Integer.parseInt(remainingText);
+
                             waitingRoomController.countDownView(count);
+                            if(count==0)
+                                bool.set(false);
+
                         }
                         System.out.println("User Input: " + input);
                         // 필요한 경우 추가 로직 수행
                     });
                 }
+                System.out.println("종료");
             }).start();
 
         } catch (Exception e) {
