@@ -27,6 +27,7 @@ import java.util.concurrent.Executors;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import org.example.auctiongameclient.domain.UserFactory;
 //
 
 public class AuctionClientController {
@@ -122,11 +123,7 @@ public class AuctionClientController {
         });
 
 
-//        gifImage = new Image(getClass().getResource("/images/sound.gif").toExternalForm(), true);
-//        gifImageView.setImage(gifImage);
-
-
-        Platform.runLater(() -> {
+        Platform.runLater(() -> { //fxml파일이 load되고나서 실행되도록할수있음
             getServerMessage(); // 초기화 이후 실행될 메서드
         });
 
@@ -136,6 +133,28 @@ public class AuctionClientController {
                 sendChatMessage();
             }
         });
+
+//        try {
+//            socket= UserFactory.MY_SOCKET;
+//            userName=UserFactory.MY_INSTANCE.getName();
+//            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            out = new PrintWriter(socket.getOutputStream(), true);
+//            messageArea.appendText("서버에 연결되었습니다.\n");
+//            out.println(userName);  // 서버로 이름 전송
+//
+//            auctionManager = new AuctionManager(out, messageArea);
+//            chatManager = new ChatManager(out, chatArea, chatInputField);
+//
+//            executor.submit(this::receiveMessages);
+//
+//            connectButton.setDisable(true);
+//            participateButton.setDisable(false);
+//            notParticipateButton.setDisable(false);
+//            bid1Button.setDisable(false);
+//            bid5Button.setDisable(false);
+//        } catch (IOException e) {
+//            messageArea.appendText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
+//        }
     }
 
 
@@ -149,6 +168,8 @@ public class AuctionClientController {
     private void getServerMessage() {
 
         try {
+            socket= UserFactory.MY_SOCKET;
+            userName=UserFactory.MY_INSTANCE.getName();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             messageArea.appendText("서버에 연결되었습니다.\n");

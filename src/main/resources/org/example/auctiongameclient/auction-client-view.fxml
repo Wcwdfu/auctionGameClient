@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="font" stylesheets="@../../../css/auction-client-view.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.AuctionClientController">
    <children>
@@ -26,11 +27,26 @@
        </HBox>
       <VBox layoutX="741.0" prefHeight="288.0" prefWidth="161.0" styleClass="font" stylesheets="@../../../css/auction-client-view.css">
          <children>
-              <Button fx:id="participateButton" disable="true" onAction="#sendParticipateRequest" prefHeight="58.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="경매 응찰" />
-              <Button fx:id="notParticipateButton" disable="true" onAction="#sendNotParticipateRequest" prefHeight="64.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="경매 불응찰" />
-              <Button fx:id="bid5Button" disable="true" onAction="#sendBid5" prefHeight="54.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="5원" />
-              <Button fx:id="bid1Button" disable="true" onAction="#sendBid1" prefHeight="54.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="1원" />
-            <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="게임종료" />
+              <Button fx:id="participateButton" disable="true" onAction="#sendParticipateRequest" prefHeight="58.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="경매 응찰">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+              <Button fx:id="notParticipateButton" disable="true" onAction="#sendNotParticipateRequest" prefHeight="64.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="경매 불응찰">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+              <Button fx:id="bid5Button" disable="true" onAction="#sendBid5" prefHeight="54.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="5원">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+              <Button fx:id="bid1Button" disable="true" onAction="#sendBid1" prefHeight="54.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="1원">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="161.0" stylesheets="@../../../css/auction-client-view.css" text="게임종료">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
          </children>
       </VBox>
       <TextArea fx:id="chatArea" layoutX="-5.0" layoutY="400.0" prefHeight="177.0" prefWidth="900.0" />

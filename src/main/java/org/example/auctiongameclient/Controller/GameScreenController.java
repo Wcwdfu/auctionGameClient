@@ -1,4 +1,4 @@
-package org.example.auctiongameclient;
+package org.example.auctiongameclient.Controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
