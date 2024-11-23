@@ -48,20 +48,20 @@
                      <Label fx:id="alertMessage" layoutX="105.0" layoutY="111.0" prefHeight="23.0" prefWidth="298.0" styleClass="connection-check" stylesheets="@../../../css/main-menu.css" textFill="#d31111" />
                   </children></Pane>
                <Label layoutX="225.0" layoutY="420.0" prefHeight="37.0" prefWidth="84.0" text="port number" />
-               <TextField fx:id="portField" layoutX="318.0" layoutY="424.0" prefHeight="28.0" prefWidth="260.0" text="12345"/>
+               <TextField fx:id="portField" layoutX="318.0" layoutY="424.0" prefHeight="28.0" prefWidth="260.0" text="12345" />
                <Label layoutX="225.0" layoutY="459.0" prefHeight="37.0" prefWidth="76.0" text="user name" />
                <TextField fx:id="nameField" layoutX="318.0" layoutY="464.0" prefHeight="28.0" prefWidth="260.0" />
                <Button fx:id="connectButton" layoutX="600.0" layoutY="422.0" mnemonicParsing="false" onAction="#connectToServer" prefHeight="71.0" prefWidth="71.0" stylesheets="@../../../css/main-menu.css" text="Connect" />
                <Pane layoutX="176.0" layoutY="14.0" prefHeight="314.0" prefWidth="548.0" styleClass="title" stylesheets="@../../../css/main-menu.css" />
+            <!--   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">-->
+            <!--      <center>-->
+            <!--         -->
+            <!--      </center>-->
+            <!--   </BorderPane>-->
+               <MediaView fx:id="mediaView" layoutX="122.0" layoutY="134.0" />
             </children>
          </AnchorPane>
       </left>
 <!--      prefHeight="400.0" prefWidth="600.0"-->
    </BorderPane>
-<!--   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">-->
-<!--      <center>-->
-<!--         -->
-<!--      </center>-->
-<!--   </BorderPane>-->
-   <MediaView fx:id="mediaView" />
 </VBox>
