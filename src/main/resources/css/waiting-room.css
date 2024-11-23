@@ -1,0 +1,16 @@
+.background {
+    -fx-background-image: url(../images/main-menu.jpg);
+    -fx-background-position: center;
+}
+
+.player-list {
+    -fx-background-color: white;
+}
+
+.font {
+    -fx-font-family: "Hakgyoansim Byeoljari TTF L";
+}
+
+.title {
+    -fx-text-fill: white;
+}
