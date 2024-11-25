@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="900.0" spacing="10.0" stylesheets="@../../../css/waiting-room.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.WaitingRoomController">
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="600.0" spacing="10.0" stylesheets="@../../../css/waiting-room.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.WaitingRoomController">
     <Label stylesheets="@../../../css/waiting-room.css" text="대기방" textFill="#f8e4e403">
       <font>
          <Font size="30.0" />
@@ -56,7 +56,8 @@
          <Insets left="10.0" right="10.0" />
       </VBox.margin>
     </VBox>
-    <TextArea fx:id="chatArea" editable="false" prefHeight="318.0" prefWidth="880.0" styleClass="font" stylesheets="@../../../css/waiting-room.css" wrapText="true">
+
+    <TextArea fx:id="chatArea" editable="false" prefHeight="100" prefWidth="880.0" styleClass="font" stylesheets="@../../../css/waiting-room.css" wrapText="true">
       <VBox.margin>
          <Insets bottom="10.0" left="10.0" right="10.0" />
       </VBox.margin>

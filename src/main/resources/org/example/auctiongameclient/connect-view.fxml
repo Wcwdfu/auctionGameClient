@@ -1,17 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.ConnectController">
-    <Label text="서버 접속"/>
-    <HBox spacing="10" alignment="CENTER">
-        <Label text="포트 번호:"/>
-        <TextField fx:id="portField" promptText="포트 번호 입력"/>
-    </HBox>
-    <HBox spacing="10" alignment="CENTER">
-        <Label text="이름:"/>
-        <TextField fx:id="nameField" promptText="이름 입력"/>
-    </HBox>
-    <Button text="접속" onAction="#connectToServer"/>
+<!--xmlns="http://javafx.com/javafx/23.0.1"-->
+<!--<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="878.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.ConnectController">-->
+<!--   <center>-->
+<!--      <AnchorPane prefHeight="620.0" prefWidth="941.0" styleClass="main-bg" stylesheets="@../../../css/main-menu.css" BorderPane.alignment="CENTER">-->
+<!--         <BorderPane.margin>-->
+<!--            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
+<!--         </BorderPane.margin>-->
+<!--         <children>-->
+<!--            <Pane layoutX="179.0" layoutY="374.0" prefHeight="131.0" prefWidth="504.0" styleClass="inner-bg" stylesheets="@../../../css/main-menu.css" />-->
+<!--            <TextField layoutX="299.0" layoutY="407.0" prefHeight="28.0" prefWidth="260.0" />-->
+<!--            <Label layoutX="206.0" layoutY="403.0" prefHeight="37.0" prefWidth="84.0" text="port number" />-->
+<!--            <Label layoutX="206.0" layoutY="442.0" prefHeight="37.0" prefWidth="76.0" text="user name" />-->
+<!--            <Button layoutX="581.0" layoutY="405.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="71.0" stylesheets="@../../../css/main-menu.css" text="Connect" />-->
+<!--            <TextField layoutX="299.0" layoutY="447.0" prefHeight="28.0" prefWidth="260.0" />-->
+<!--            <Pane layoutX="157.0" layoutY="14.0" prefHeight="288.0" prefWidth="548.0" styleClass="title" stylesheets="@../../../css/main-menu.css" />-->
+<!--         </children>-->
+<!--      </AnchorPane>-->
+<!--   </center>-->
+<!--   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">-->
+<!--      <center>-->
+<!--         <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="200.0" BorderPane.alignment="CENTER"></MediaView>-->
+<!--      </center>-->
+<!--   </BorderPane>-->
+<!--</BorderPane>-->
+
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.auctiongameclient.Controller.ConnectController">
+   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0">
+      <left>
+         <AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="main-bg" stylesheets="@../../../css/main-menu.css" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+               <Insets />
+            </BorderPane.margin>
+            <children>
+               <Pane layoutX="198.0" layoutY="391.0" prefHeight="142.0" prefWidth="504.0" styleClass="inner-bg" stylesheets="@../../../css/main-menu.css">
+                  <children>
+                     <Label fx:id="alertMessage" layoutX="105.0" layoutY="111.0" prefHeight="23.0" prefWidth="298.0" styleClass="connection-check" stylesheets="@../../../css/main-menu.css" textFill="#d31111" />
+                  </children></Pane>
+               <Label layoutX="225.0" layoutY="420.0" prefHeight="37.0" prefWidth="84.0" text="port number" />
+               <TextField fx:id="portField" layoutX="318.0" layoutY="424.0" prefHeight="28.0" prefWidth="260.0" text="12345" />
+               <Label layoutX="225.0" layoutY="459.0" prefHeight="37.0" prefWidth="76.0" text="user name" />
+               <TextField fx:id="nameField" layoutX="318.0" layoutY="464.0" prefHeight="28.0" prefWidth="260.0" />
+               <Button fx:id="connectButton" layoutX="600.0" layoutY="422.0" mnemonicParsing="false" onAction="#connectToServer" prefHeight="71.0" prefWidth="71.0" stylesheets="@../../../css/main-menu.css" text="Connect" />
+               <Pane layoutX="176.0" layoutY="14.0" prefHeight="314.0" prefWidth="548.0" styleClass="title" stylesheets="@../../../css/main-menu.css" />
+            <!--   <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">-->
+            <!--      <center>-->
+            <!--         -->
+            <!--      </center>-->
+            <!--   </BorderPane>-->
+               <MediaView fx:id="mediaView" layoutX="122.0" layoutY="134.0" />
+            </children>
+         </AnchorPane>
+      </left>
+<!--      prefHeight="400.0" prefWidth="600.0"-->
+   </BorderPane>
 </VBox>

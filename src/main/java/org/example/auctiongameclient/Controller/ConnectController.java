@@ -1,76 +1,143 @@
-//package org.example.auctiongameclient.Controller;
-//
-//import javafx.fxml.FXML;
-//import javafx.scene.control.TextField;
-//import javafx.scene.control.Alert;
-//import javafx.scene.control.Alert.AlertType;
-//import javafx.stage.Stage;
-//import javafx.fxml.FXMLLoader;
-//import javafx.scene.Parent;
-//import javafx.scene.Scene;
-//
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//import java.net.Socket;
-//import java.util.Scanner;
-//
-//public class ConnectController {
-//    @FXML
-//    private TextField portField;
-//    @FXML
-//    private TextField nameField;
-//
-//    private Socket socket;
-//    private PrintWriter out;
-//    private Scanner in;
-//
-//    @FXML
-//    private void connectToServer() {
-//        String port = portField.getText();
-//        String name = nameField.getText();
-//
-//        // 포트 번호와 이름이 입력되지 않았을 경우 경고
-//        if (port.isEmpty() || name.isEmpty()) {
-//            showAlert("포트 번호와 이름을 모두 입력하세요.");
-//            return;
-//        }
-//
+package org.example.auctiongameclient.Controller;
+
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+import org.example.auctiongameclient.MediaPlayerManager;
+import org.example.auctiongameclient.domain.User;
+import org.example.auctiongameclient.domain.UserFactory;
+
+import java.io.*;
+import java.net.Socket;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+
+public class ConnectController {
+
+    @FXML
+    private Label alertMessage;
+    @FXML
+    private TextField portField;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private Button connectButton;
+
+    private Scanner in;
+    private PrintWriter out;
+    private final String serverAddress = "localhost";
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+
+    String userName;
+
+    @FXML
+    private MediaView mediaView; //음악
+    MediaPlayer mediaPlayer;
+    Media media;
+
+    public void initialize() {
+        String path = new File("src/main/resources/bgms/Billiards - Wii Play.mp3").getAbsolutePath();
+        media = new Media(new File(path).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+        MediaPlayerManager.setMediaPlayer(mediaPlayer);
+        mediaView.setMediaPlayer(mediaPlayer);
+        MediaPlayerManager.getMediaPlayer().setAutoPlay(true);
+        MediaPlayerManager.getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    @FXML
+    private void connectToServer(ActionEvent event) {
+        int port = Integer.parseInt(portField.getText());
+        userName = nameField.getText().trim();
+        if (userName.isEmpty() || portField.getText().isEmpty()) {
+            alertMessage.setText("포트번호와 이름을 모두 입력하세요.\n");
+            return;
+        }
+
 //        try {
-//            // 서버에 연결
-//            socket = new Socket("localhost", Integer.parseInt(port)); // 예시로 localhost 사용
-//            out = new PrintWriter(socket.getOutputStream(), true);
-//            in = new Scanner(socket.getInputStream());
+//            Socket socket = new Socket(serverAddress, port);
+//            if(socket.isConnected()) {
+//                switchToGameScreen(event, socket);
+//            }
+//            connectButton.setDisable(true);
 //
-//            // 서버에 이름 전송
-//            out.println(name);
-//
-//            // 연결 성공 시 대기방 화면으로 전환
-//            openWaitingRoom(name);
 //        } catch (IOException e) {
-//            showAlert("서버에 연결할 수 없습니다: " + e.getMessage());
+//            alertMessage.setText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
 //        }
-//    }
-//
-//    private void openWaitingRoom(String userName) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/auctiongameclient/waiting-room-view.fxml"));
-//            Parent root = loader.load();
-//
-//            WaitingRoomController waitingRoomController = loader.getController();
-//            waitingRoomController.initializeUserName(userName);
-//
-//            Stage stage = (Stage) portField.getScene().getWindow();
-//            stage.setScene(new Scene(root));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void showAlert(String message) {
-//        Alert alert = new Alert(AlertType.ERROR);
-//        alert.setTitle("연결 오류");
-//        alert.setHeaderText(null);
-//        alert.setContentText(message);
-//        alert.showAndWait();
-//    }
-//}
+
+        try {
+            Socket socket = new Socket(serverAddress, port);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new Scanner(socket.getInputStream());
+
+            out.println(userName);
+
+            UserFactory.initialize(new User(userName),socket);
+
+            switchToWaitingRoom(in);
+
+        } catch (IOException e) {
+            alertMessage.setText(e.getMessage());
+        }
+    }
+
+    public void switchToWaitingRoom(Scanner scanner) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/auctiongameclient/waiting-room-view.fxml"));
+            Parent root = loader.load();
+            WaitingRoomController waitingRoomController = loader.getController();
+
+            Stage stage = (Stage) portField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+
+            new Thread(() -> {
+                AtomicBoolean bool= new AtomicBoolean(true);
+                while (bool.get()) {
+                    boolean b = scanner.hasNextLine();
+                    String input = scanner.nextLine();
+                    Platform.runLater(() -> {
+                        if(input.startsWith("Matching;")){
+                            String remainingText = input.substring("Matching;".length());
+                            String[] userNames = remainingText.split(",");
+                            waitingRoomController.modifyView(userNames);
+                        }
+                        else if(input.startsWith("MatchingFinished;")){
+                            String remainingText = input.substring("MatchingFinished;".length());
+                            int count= Integer.parseInt(remainingText);
+
+                            waitingRoomController.countDownView(count);
+                            if(count==0)
+                                bool.set(false);
+
+                        }
+                        System.out.println("User Input: " + input);
+                        // 필요한 경우 추가 로직 수행
+                    });
+                }
+                System.out.println("종료");
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+}
