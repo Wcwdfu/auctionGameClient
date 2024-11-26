@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -382,4 +383,12 @@ public class MainGameController {
     }
 
 
+    public void itemMiracle(MouseEvent mouseEvent) {
+        try {
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("일감호의 기적 사용");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

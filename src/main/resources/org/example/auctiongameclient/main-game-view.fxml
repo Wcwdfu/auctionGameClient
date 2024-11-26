@@ -134,7 +134,7 @@
                     <Label fx:id="itemSlot5Label" layoutX="5" layoutY="45" text="x0"
                            style="-fx-text-fill: black; -fx-font-weight: bold;"/>
                 </Pane>
-                <Pane fx:id="itemSlot6" prefHeight="60" prefWidth="60" >
+                <Pane fx:id="itemSlot6" prefHeight="60" prefWidth="60" onMouseClicked="#itemMiracle">
                     <Label fx:id="itemSlot6Label" layoutX="5" layoutY="45" text="x0"
                            style="-fx-text-fill: black; -fx-font-weight: bold;"/>
                 </Pane>
