@@ -89,6 +89,8 @@ public class MainGameController {
     private String userName;
     private Socket socket;
 
+//    private boolean itemUsed = false;
+
 
     private AuctionManager auctionManager;
     private ChatManager chatManager;
@@ -295,6 +297,9 @@ public class MainGameController {
             String message;
             while ((message = in.readLine()) != null) {
                 final String msg = message;
+//                if (msg.endsWith("성공")) {
+//                    itemUsed = true;
+//                }
                 UIUtils.runOnUIThread(() -> processMessage(msg));
             }
         } catch (IOException e) {
@@ -307,6 +312,11 @@ public class MainGameController {
             chatManager.receiveChatMessage(msg.substring(2));
 
         } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
+            for (int i = 1 ; i <= 7 ; i++) {
+                Label countLabel = getLabelForSlot(i);
+                countLabel.setDisable(false);
+            }
+
             String itemName = msg.substring(msg.lastIndexOf(":") + 2).trim();
             updateAuctionItemImage(itemName);
             mainMessageArea.appendText(msg + "\n");
@@ -387,6 +397,19 @@ public class MainGameController {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println("일감호의 기적 사용");
+            for (int i = 1 ; i <= 7 ; i++) {
+                Label countLabel = getLabelForSlot(i);
+                countLabel.setDisable(true);
+            }
+//            System.out.println(Integer.parseInt(getLabelForSlot(getSlotNumberForItem("일감호의 기적")).getText().substring(1)) - 1);
+//            System.out.println("itemUsed" + itemUsed);
+//            if (itemUsed) {
+//                Label countLabel = getLabelForSlot(getSlotNumberForItem("일감호의 기적"));
+//                System.out.println("아이템슬롯 업데이트 : " + Integer.toString(Integer.parseInt(getLabelForSlot(getSlotNumberForItem("일감호의 기적")).getText().substring(1)) - 1));
+//                updateItemSlot(getSlotNumberForItem("일감호의 기적"), Integer.parseInt(getLabelForSlot(getSlotNumberForItem("일감호의 기적")).getText().substring(1)) - 1 );
+//            }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
