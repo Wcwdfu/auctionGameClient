@@ -432,6 +432,7 @@ public class MainGameController {
                 break;
             case "itemSlot6":
                 //TODO 일감호의 기적 아이템 호출
+                itemMiracle();
                 System.out.println("일감호의 기적 아이템 사용");
                 break;
             case "itemSlot7":
@@ -461,7 +462,7 @@ public class MainGameController {
         return true;
     }
 
-    public void itemMiracle(MouseEvent mouseEvent) {
+    public void itemMiracle() {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println("일감호의 기적 사용");
@@ -469,13 +470,6 @@ public class MainGameController {
                 Label countLabel = getLabelForSlot(i);
                 countLabel.setDisable(true);
             }
-//            System.out.println(Integer.parseInt(getLabelForSlot(getSlotNumberForItem("일감호의 기적")).getText().substring(1)) - 1);
-//            System.out.println("itemUsed" + itemUsed);
-//            if (itemUsed) {
-//                Label countLabel = getLabelForSlot(getSlotNumberForItem("일감호의 기적"));
-//                System.out.println("아이템슬롯 업데이트 : " + Integer.toString(Integer.parseInt(getLabelForSlot(getSlotNumberForItem("일감호의 기적")).getText().substring(1)) - 1));
-//                updateItemSlot(getSlotNumberForItem("일감호의 기적"), Integer.parseInt(getLabelForSlot(getSlotNumberForItem("일감호의 기적")).getText().substring(1)) - 1 );
-//            }
 
 
         } catch (IOException e) {
