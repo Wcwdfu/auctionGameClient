@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -26,6 +27,7 @@ import java.util.concurrent.Executors;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import org.example.auctiongameclient.domain.User;
 import org.example.auctiongameclient.domain.UserFactory;
 import org.example.auctiongameclient.utils.UIUtils;
 //
@@ -156,6 +158,15 @@ public class MainGameController {
         itemSlots.put(5, itemSlot5);
         itemSlots.put(6, itemSlot6);
         itemSlots.put(7, itemSlot7);
+
+        //호버 이벤트
+        setupTooltip(itemSlot1, "/images/쿠.png", "쿠: 건국대를 대표하는 황소 마스코트이다.");
+        setupTooltip(itemSlot2, "/images/건구스.png", "건구스: 건국대에 상주하는 거위이다. 청심대에서 볼 수 있다");
+        setupTooltip(itemSlot3, "/images/건덕이.png", "건덕이: 일감호에 있는 청둥오리이다.");
+        setupTooltip(itemSlot4, "/images/건붕이.png", "건붕이: 건국대를 다니는 컴공생이다. 네트워크 프로그래밍을 수강하고 있다.");
+        setupTooltip(itemSlot5, "/images/황소의분노.png", "황소의 분노: 해당 라운드 응찰자가 공개되기 전에 해당 경매품을 무조건 유찰시킨다.");
+        setupTooltip(itemSlot6, "/images/일감호의기적.png", "일감호의 기적: 경매중 자신이 응찰한 상태이면, 해당 경매품을 0원에 자신이 무조건 낙찰받는다.");
+        setupTooltip(itemSlot7, "/images/스턴건.png", "스턴건: 경매중에 대상을 선택하여, 대상의 응찰 상태를 강제로 불응으로 변경시킨다.");
 
         setSlotBackground(1, "쿠");
         setSlotBackground(2, "건구스");
@@ -381,5 +392,63 @@ public class MainGameController {
         }
     }
 
+    private void setupTooltip(Pane pane, String imagePath, String description) {
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText(description);
+        tooltip.setStyle("-fx-font-size: 20px;");
+        Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
+        tooltip.setGraphic(imageView);
+        Tooltip.install(pane, tooltip);
+    }
+
+    //아이템 클릭 이벤트
+    @FXML
+    private void useItem(MouseEvent event) {
+        Pane clickedPane = (Pane) event.getSource();
+        System.out.println("Clicked Pane: " + clickedPane.getId());
+
+        //미소유 아이템 경우 return
+        if(!checkoutItemExist(clickedPane))
+            return;
+
+        switch (clickedPane.getId()) {
+            case "itemSlot5":
+                //TODO 황소의 분노 아이템 호출
+                System.out.println("황소의 분노 아이템 사용");
+                break;
+            case "itemSlot6":
+                //TODO 일감호의 기적 아이템 호출
+                System.out.println("일감호의 기적 아이템 사용");
+                break;
+            case "itemSlot7":
+                //TODO 스턴건 아이템 호출
+                System.out.println("스턴건 아이템 사용");
+                break;
+            default:
+                System.out.println("확인되지 않은 아이템 클릭 이벤트");
+        }
+    }
+
+    private boolean checkoutItemExist(Pane clickedPane){
+        String labelText = clickedPane.getChildren()
+                .stream()
+                .filter(node -> node instanceof Label)
+                .map(node -> ((Label) node).getText())
+                .findFirst()
+                .get();
+
+        if (labelText.equals("x0")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING); // 경고창(AlertType.WARNING)
+            alert.setTitle("아이템 경고");
+            alert.setHeaderText("소유하지 않은 아이템입니다.");
+            alert.showAndWait(); // 창을 띄우고 사용자의 응답을 기다림
+            return false;
+        }
+        return true;
+    }
 
 }

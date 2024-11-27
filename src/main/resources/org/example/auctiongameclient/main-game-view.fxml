@@ -130,15 +130,15 @@
                     <Label fx:id="itemSlot4Label" layoutX="5" layoutY="45" text="x0"
                            style="-fx-text-fill: black; -fx-font-weight: bold;"/>
                 </Pane>
-                <Pane fx:id="itemSlot5" prefHeight="60" prefWidth="60" >
+                <Pane fx:id="itemSlot5" prefHeight="60" onMouseClicked="#useItem" prefWidth="60" >
                     <Label fx:id="itemSlot5Label" layoutX="5" layoutY="45" text="x0"
                            style="-fx-text-fill: black; -fx-font-weight: bold;"/>
                 </Pane>
-                <Pane fx:id="itemSlot6" prefHeight="60" prefWidth="60" >
+                <Pane fx:id="itemSlot6" prefHeight="60" onMouseClicked="#useItem" prefWidth="60" >
                     <Label fx:id="itemSlot6Label" layoutX="5" layoutY="45" text="x0"
                            style="-fx-text-fill: black; -fx-font-weight: bold;"/>
                 </Pane>
-                <Pane fx:id="itemSlot7" prefHeight="60" prefWidth="60" >
+                <Pane fx:id="itemSlot7" prefHeight="60" onMouseClicked="#useItem" prefWidth="60" >
                     <Label fx:id="itemSlot7Label" layoutX="5" layoutY="45" text="x0"
                            style="-fx-text-fill: black; -fx-font-weight: bold;"/>
                 </Pane>
