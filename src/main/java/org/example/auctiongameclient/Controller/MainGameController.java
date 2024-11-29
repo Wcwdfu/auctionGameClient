@@ -18,10 +18,13 @@ import org.example.auctiongameclient.ChatManager;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //배경음악기능 위한 라이브러리
 import javafx.scene.media.Media;
@@ -73,6 +76,10 @@ public class MainGameController {
     @FXML
     private Label user1Label, user2Label, user3Label, user4Label;
     private String[] userNames;
+    String pattern = "참여명단(.*?) 님이 경매에 참여했습니다";
+    Pattern regex = Pattern.compile(pattern);
+    Matcher matcher;
+    private ArrayList<String> participatingUserNames = new ArrayList<>();
     @FXML
     private Pane itemSlot1, itemSlot2, itemSlot3, itemSlot4, itemSlot5, itemSlot6, itemSlot7;
     @FXML
@@ -204,6 +211,7 @@ public class MainGameController {
             }
         });
 
+
         Platform.runLater(() -> { //fxml파일이 load되고나서 실행되도록할수있음
             getServerMessage(); // 초기화 이후 실행될 메서드
         });
@@ -214,6 +222,7 @@ public class MainGameController {
                 sendChatMessage();
             }
         });
+
     }
 
 
@@ -347,6 +356,12 @@ public class MainGameController {
             String list = msg.substring(4);
             mainMessageArea.appendText(list + "\n");
 
+//            matcher = regex.matcher(msg);
+//            if(matcher.find()) {
+//                String result = matcher.group(1);
+//                participatingUserNames.add(result);
+//            }
+
         } else if (msg.startsWith("소지금")) {
             String moneyString = msg.substring(3);
             int money = Integer.parseInt(moneyString.trim());
@@ -370,8 +385,13 @@ public class MainGameController {
                 }
             }
 
-        } else {
-            countArea.appendText(msg + "\n");// 작은 영역에 텍스트 표시
+        } else if(msg.startsWith("스턴건")){
+            mainMessageArea.appendText(msg+"\n");
+            bid1Button.setDisable(false);
+            bid5Button.setDisable(false);
+        }
+        else{
+            countArea.appendText(msg+"\n");// 작은 영역에 텍스트 표시
         }
     }
 
@@ -464,6 +484,7 @@ public class MainGameController {
                 break;
             case "itemSlot7":
                 //TODO 스턴건 아이템 호출
+                itemStunGun();
                 System.out.println("스턴건 아이템 사용");
                 break;
             default:
@@ -514,4 +535,27 @@ public class MainGameController {
         }
 
     }
+
+    private void itemStunGun() {
+        user1Label.setOnMouseClicked(event -> clickTargetUser(event));
+        user2Label.setOnMouseClicked(event -> clickTargetUser(event));
+        user3Label.setOnMouseClicked(event -> clickTargetUser(event));
+        user4Label.setOnMouseClicked(event -> clickTargetUser(event));
+
+
+    }
+
+    @FXML
+    private void clickTargetUser(MouseEvent event) {
+        Label clickedLabel = (Label) event.getSource();
+        System.out.println("Clicked Lable: " + clickedLabel.getText());
+
+        out.println("스턴건 " + clickedLabel.getText());
+
+        user1Label.setOnMouseClicked(null);
+        user2Label.setOnMouseClicked(null);
+        user3Label.setOnMouseClicked(null);
+        user4Label.setOnMouseClicked(null);
+    }
+
 }
