@@ -105,13 +105,22 @@ public class MainGameController {
         this.userNames = userNames;
         updateLabels();
     }
+
     // 각 라벨에 유저 이름 업데이트
     private void updateLabels() {
         if (userNames != null) {
-            if (userNames.length > 0) user1Label.setText(userNames[0]);
-            if (userNames.length > 1) user2Label.setText(userNames[1]);
-            if (userNames.length > 2) user3Label.setText(userNames[2]);
-            if (userNames.length > 3) user4Label.setText(userNames[3]);
+            if (userNames.length > 0) {
+                user1Label.setText(userNames[0]);
+            }
+            if (userNames.length > 1) {
+                user2Label.setText(userNames[1]);
+            }
+            if (userNames.length > 2) {
+                user3Label.setText(userNames[2]);
+            }
+            if (userNames.length > 3) {
+                user4Label.setText(userNames[3]);
+            }
         }
     }
 
@@ -121,8 +130,9 @@ public class MainGameController {
         if (slot != null) {
             String imagePath = goodsImages.getOrDefault(itemName, itemImages.get(itemName));
             if (imagePath != null) {
-                slot.setStyle("-fx-background-image: url('" + getClass().getResource(imagePath).toExternalForm() + "'); " +
-                        "-fx-background-size: cover; -fx-border-color: black;");
+                slot.setStyle(
+                        "-fx-background-image: url('" + getClass().getResource(imagePath).toExternalForm() + "'); " +
+                                "-fx-background-size: cover; -fx-border-color: black;");
             } else {
                 slot.setStyle("-fx-background-color: lightgray; -fx-border-color: black;");
             }
@@ -194,7 +204,6 @@ public class MainGameController {
             }
         });
 
-
         Platform.runLater(() -> { //fxml파일이 load되고나서 실행되도록할수있음
             getServerMessage(); // 초기화 이후 실행될 메서드
         });
@@ -212,8 +221,8 @@ public class MainGameController {
     private void getServerMessage() {
 
         try {
-            socket= UserFactory.MY_SOCKET;
-            userName=UserFactory.MY_INSTANCE.getName();
+            socket = UserFactory.MY_SOCKET;
+            userName = UserFactory.MY_INSTANCE.getName();
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             mainMessageArea.appendText("경매 게임에 참여하였습니다!\n");
@@ -322,7 +331,7 @@ public class MainGameController {
             chatManager.receiveChatMessage(msg.substring(2));
 
         } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
-            for (int i = 1 ; i <= 7 ; i++) {
+            for (int i = 1; i <= 7; i++) {
                 Label countLabel = getLabelForSlot(i);
                 countLabel.setDisable(false);
             }
@@ -330,17 +339,17 @@ public class MainGameController {
             String itemName = msg.substring(msg.lastIndexOf(":") + 2).trim();
             updateAuctionItemImage(itemName);
             mainMessageArea.appendText(msg + "\n");
-        } else if(msg.startsWith("메인")){
+        } else if (msg.startsWith("메인")) {
             String mainMsg = msg.substring(2);
-            mainMessageArea.appendText(mainMsg+"\n");
+            mainMessageArea.appendText(mainMsg + "\n");
 
         } else if (msg.startsWith("참여명단")) {
-            String list=msg.substring(4);
-            mainMessageArea.appendText(list+"\n");
+            String list = msg.substring(4);
+            mainMessageArea.appendText(list + "\n");
 
-        } else if(msg.startsWith("소지금")){
-            String moneyString=msg.substring(3);
-            int money=Integer.parseInt(moneyString.trim());
+        } else if (msg.startsWith("소지금")) {
+            String moneyString = msg.substring(3);
+            int money = Integer.parseInt(moneyString.trim());
             Platform.runLater(() -> userMoneyLabel.setText("소지 금액: " + money));
 
         } else if (msg.startsWith("소유 물품")) {
@@ -361,22 +370,30 @@ public class MainGameController {
                 }
             }
 
-        } else{
-            countArea.appendText(msg+"\n");// 작은 영역에 텍스트 표시
+        } else {
+            countArea.appendText(msg + "\n");// 작은 영역에 텍스트 표시
         }
     }
 
     // 아이템 이름에 해당하는 슬롯 번호 매핑
     private Integer getSlotNumberForItem(String itemName) {
         switch (itemName) {
-            case "쿠": return 1;
-            case "건구스": return 2;
-            case "건덕이": return 3;
-            case "건붕이": return 4;
-            case "황소의 분노": return 5;
-            case "일감호의 기적": return 6;
-            case "스턴건": return 7;
-            default: return null;
+            case "쿠":
+                return 1;
+            case "건구스":
+                return 2;
+            case "건덕이":
+                return 3;
+            case "건붕이":
+                return 4;
+            case "황소의 분노":
+                return 5;
+            case "일감호의 기적":
+                return 6;
+            case "스턴건":
+                return 7;
+            default:
+                return null;
         }
     }
 
@@ -391,14 +408,22 @@ public class MainGameController {
     // 슬롯 번호에 해당하는 레이블 가져오는 헬퍼 메서드
     private Label getLabelForSlot(int slotNumber) {
         switch (slotNumber) {
-            case 1: return itemSlot1Label;
-            case 2: return itemSlot2Label;
-            case 3: return itemSlot3Label;
-            case 4: return itemSlot4Label;
-            case 5: return itemSlot5Label;
-            case 6: return itemSlot6Label;
-            case 7: return itemSlot7Label;
-            default: return null;
+            case 1:
+                return itemSlot1Label;
+            case 2:
+                return itemSlot2Label;
+            case 3:
+                return itemSlot3Label;
+            case 4:
+                return itemSlot4Label;
+            case 5:
+                return itemSlot5Label;
+            case 6:
+                return itemSlot6Label;
+            case 7:
+                return itemSlot7Label;
+            default:
+                return null;
         }
     }
 
@@ -422,12 +447,14 @@ public class MainGameController {
         System.out.println("Clicked Pane: " + clickedPane.getId());
 
         //미소유 아이템 경우 return
-        if(!checkoutItemExist(clickedPane))
+        if (!checkoutItemExist(clickedPane)) {
             return;
+        }
 
         switch (clickedPane.getId()) {
             case "itemSlot5":
                 //TODO 황소의 분노 아이템 호출
+                itemAnger();
                 System.out.println("황소의 분노 아이템 사용");
                 break;
             case "itemSlot6":
@@ -444,7 +471,7 @@ public class MainGameController {
         }
     }
 
-    private boolean checkoutItemExist(Pane clickedPane){
+    private boolean checkoutItemExist(Pane clickedPane) {
         String labelText = clickedPane.getChildren()
                 .stream()
                 .filter(node -> node instanceof Label)
@@ -466,7 +493,7 @@ public class MainGameController {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println("일감호의 기적 사용");
-            for (int i = 1 ; i <= 7 ; i++) {
+            for (int i = 1; i <= 7; i++) {
                 Label countLabel = getLabelForSlot(i);
                 countLabel.setDisable(true);
             }
@@ -475,5 +502,16 @@ public class MainGameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void itemAnger() {
+        try {
+            out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("ItemUse;황소의 분노;"+userName);
+            System.out.println("ItemUse;황소의 분노;");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
