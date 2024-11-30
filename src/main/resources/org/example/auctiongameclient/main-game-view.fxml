@@ -80,10 +80,10 @@
     <HBox layoutY="405" spacing="20" style="-fx-padding: 0 0 0 18;">
         <!-- 유저 이름 표시 -->
         <HBox alignment="CENTER" spacing="18">
-            <Label fx:id="user1Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightblue;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저1" />
-            <Label fx:id="user2Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightblue;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저2" />
-            <Label fx:id="user3Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightblue;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저3" />
-            <Label fx:id="user4Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightblue;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저4" />
+            <Label fx:id="user1Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightgrey;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저1" />
+            <Label fx:id="user2Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightgrey;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저2" />
+            <Label fx:id="user3Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightgrey;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저3" />
+            <Label fx:id="user4Label" prefHeight="80" prefWidth="80" style="-fx-border-color: black; -fx-background-color: lightgrey;                    -fx-text-alignment: center; -fx-alignment: center; -fx-font-weight: bold;                    -fx-padding: 10;" text="유저4" />
 
         </HBox>
 

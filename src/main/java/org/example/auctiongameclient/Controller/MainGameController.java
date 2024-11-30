@@ -75,11 +75,14 @@ public class MainGameController {
     private Label userMoneyLabel;
     @FXML
     private Label user1Label, user2Label, user3Label, user4Label;
+    private final Label[] userLabels = {user1Label, user2Label, user3Label, user4Label};
+    private ArrayList<Label> participatingUserNames = new ArrayList<>();
+
     private String[] userNames;
-    String pattern = "참여명단(.*?) 님이 경매에 참여했습니다";
+    String pattern = "참여명단(.*?) 님";
     Pattern regex = Pattern.compile(pattern);
     Matcher matcher;
-    private ArrayList<String> participatingUserNames = new ArrayList<>();
+
     @FXML
     private Pane itemSlot1, itemSlot2, itemSlot3, itemSlot4, itemSlot5, itemSlot6, itemSlot7;
     @FXML
@@ -348,6 +351,12 @@ public class MainGameController {
             String itemName = msg.substring(msg.lastIndexOf(":") + 2).trim();
             updateAuctionItemImage(itemName);
             mainMessageArea.appendText(msg + "\n");
+
+            for(Label label:participatingUserNames) {
+                label.setStyle(label.getStyle() + "-fx-background-color: lightgray;");
+            }
+            participatingUserNames.clear();
+
         } else if (msg.startsWith("메인")) {
             String mainMsg = msg.substring(2);
             mainMessageArea.appendText(mainMsg + "\n");
@@ -356,12 +365,27 @@ public class MainGameController {
             String list = msg.substring(4);
             mainMessageArea.appendText(list + "\n");
 
-//            matcher = regex.matcher(msg);
-//            if(matcher.find()) {
-//                String result = matcher.group(1);
-//                participatingUserNames.add(result);
-//            }
+            matcher = regex.matcher(msg);
+            if(matcher.find()) {
+                String result = matcher.group(1);
 
+                if(result.equals(user1Label.getText())) {
+                    user1Label.setStyle(user1Label.getStyle() + "-fx-background-color: lightblue;");
+                    participatingUserNames.add(user1Label);
+
+                } else if(result.equals(user2Label.getText())) {
+                    user2Label.setStyle(user2Label.getStyle() + "-fx-background-color: lightblue;");
+                    participatingUserNames.add(user2Label);
+
+                } else if(result.equals(user3Label.getText())) {
+                    user3Label.setStyle(user3Label.getStyle() + "-fx-background-color: lightblue;");
+                    participatingUserNames.add(user3Label);
+
+                } else if(result.equals(user4Label.getText())) {
+                    user4Label.setStyle(user4Label.getStyle() + "-fx-background-color: lightblue;");
+                    participatingUserNames.add(user4Label);
+                }
+            }
         } else if (msg.startsWith("소지금")) {
             String moneyString = msg.substring(3);
             int money = Integer.parseInt(moneyString.trim());
@@ -389,6 +413,15 @@ public class MainGameController {
             mainMessageArea.appendText(msg+"\n");
             bid1Button.setDisable(false);
             bid5Button.setDisable(false);
+
+        } else if(msg.startsWith("participatingListUpdate")) {
+            String targetUser = msg.split(" ")[1];
+            for(Label label:participatingUserNames) {
+                if(label.getText().equals(targetUser)){
+                    label.setStyle(label.getStyle() + "-fx-background-color: lightgray;");
+                    break;
+                }
+            }
         }
         else{
             countArea.appendText(msg+"\n");// 작은 영역에 텍스트 표시
@@ -537,12 +570,14 @@ public class MainGameController {
     }
 
     private void itemStunGun() {
-        user1Label.setOnMouseClicked(event -> clickTargetUser(event));
-        user2Label.setOnMouseClicked(event -> clickTargetUser(event));
-        user3Label.setOnMouseClicked(event -> clickTargetUser(event));
-        user4Label.setOnMouseClicked(event -> clickTargetUser(event));
+        for(Label label:participatingUserNames) {
+            System.out.println("스턴건 - 참여자: " + label.getText());
+            if(label.getText().equals(userName))
+                continue;
 
-
+            label.setOnMouseClicked(event -> clickTargetUser(event));
+            label.setStyle(label.getStyle() + "-fx-background-color: blue;");
+        }
     }
 
     @FXML
@@ -552,10 +587,13 @@ public class MainGameController {
 
         out.println("스턴건 " + clickedLabel.getText());
 
-        user1Label.setOnMouseClicked(null);
-        user2Label.setOnMouseClicked(null);
-        user3Label.setOnMouseClicked(null);
-        user4Label.setOnMouseClicked(null);
+        participatingUserNames.remove(clickedLabel);
+        clickedLabel.setStyle(clickedLabel.getStyle()+ "-fx-background-color: lightgray;");
+        for(Label label:participatingUserNames) {
+            label.setOnMouseClicked(null);
+            label.setStyle(label.getStyle() + "-fx-background-color: lightblue;");
+        }
+
     }
 
 }
