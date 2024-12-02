@@ -31,7 +31,7 @@ public class ConnectController {
     @FXML
     private Label alertMessage;
     @FXML
-    private TextField portField;
+    private TextField addressField;
     @FXML
     private TextField nameField;
     @FXML
@@ -39,7 +39,7 @@ public class ConnectController {
 
     private Scanner in;
     private PrintWriter out;
-    private final String serverAddress = "localhost";
+    private final int port = 12345;
 
     private Stage stage;
     private Scene scene;
@@ -64,23 +64,13 @@ public class ConnectController {
 
     @FXML
     private void connectToServer(ActionEvent event) {
-        int port = Integer.parseInt(portField.getText());
-        userName = nameField.getText().trim();
-        if (userName.isEmpty() || portField.getText().isEmpty()) {
-            alertMessage.setText("포트번호와 이름을 모두 입력하세요.\n");
+        String serverAddress = addressField.getText().trim(); // 서버 주소 읽기
+        String userName = nameField.getText().trim();
+
+        if (serverAddress.isEmpty() || userName.isEmpty()) {
+            alertMessage.setText("서버 주소와 사용자 이름을 모두 입력하세요.\n");
             return;
         }
-
-//        try {
-//            Socket socket = new Socket(serverAddress, port);
-//            if(socket.isConnected()) {
-//                switchToGameScreen(event, socket);
-//            }
-//            connectButton.setDisable(true);
-//
-//        } catch (IOException e) {
-//            alertMessage.setText("서버에 연결할 수 없습니다: " + e.getMessage() + "\n");
-//        }
 
         try {
             Socket socket = new Socket(serverAddress, port);
@@ -105,7 +95,7 @@ public class ConnectController {
             Parent root = loader.load();
             WaitingRoomController waitingRoomController = loader.getController();
 
-            Stage stage = (Stage) portField.getScene().getWindow();
+            Stage stage = (Stage) addressField.getScene().getWindow();
             stage.setScene(new Scene(root));
 
             new Thread(() -> {
