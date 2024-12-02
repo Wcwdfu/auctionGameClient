@@ -1,6 +1,7 @@
 module org.example.auctiongameclient {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
 
     requires org.kordamp.bootstrapfx.core;
 
@@ -8,4 +9,6 @@ module org.example.auctiongameclient {
     exports org.example.auctiongameclient;
     exports org.example.auctiongameclient.Controller;
     opens org.example.auctiongameclient.Controller to javafx.fxml;
+    exports org.example.auctiongameclient.utils;
+    opens org.example.auctiongameclient.utils to javafx.fxml;
 }

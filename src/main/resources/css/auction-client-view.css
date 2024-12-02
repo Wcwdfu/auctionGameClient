@@ -1,0 +1,55 @@
+.music-box-playing {
+    -fx-background-position: center center;
+    -fx-background-size: 80%;
+    -fx-background-image: url(../images/sound.gif);
+}
+
+.music-box-paused {
+    -fx-background-position: center center;
+    -fx-background-size: 80%;
+    -fx-background-image: url(../images/sound.png);
+}
+
+.playButton {
+    -fx-background-image: url(../images/play-icon.png);
+    -fx-background-position: center center;
+    -fx-background-size: contain;
+    /*-fx-background-radius: 25;*/
+    /*-fx-pref-width: 50;*/
+    /*-fx-pref-height: 50;*/
+}
+
+.pauseButton {
+    -fx-background-image: url(../images/pause-icon.png);
+    -fx-background-position: center center;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    /*-fx-background-radius: 25;*/
+    /*-fx-pref-width: 50;*/
+    /*-fx-pref-height: 50;*/
+}
+
+.font {
+    -fx-font-family: "Hakgyoansim Byeoljari TTF L";
+}
+
+.messageArea {
+    -fx-font-size: 14pt;
+    /*-fx-background-image: url(../images/frame1.png);*/
+    /*-fx-background-position: center;*/
+    /*-fx-background-size: 50 50;*/
+}
+
+.button {
+    -fx-font-size:10pt;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-text-fill: black;
+}
+
+.items {
+    -fx-cursor: hand;
+}

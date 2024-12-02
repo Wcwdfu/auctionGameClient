@@ -6,24 +6,23 @@ import java.io.PrintWriter;
 public class AuctionManager {
     private final PrintWriter out;
     private final TextArea messageArea;
+    private final TextArea countArea;
 
-    public AuctionManager(PrintWriter out, TextArea messageArea) {
+    public AuctionManager(PrintWriter out, TextArea messageArea, TextArea countArea) {
         this.out = out;
         this.messageArea = messageArea;
+        this.countArea=countArea;
     }
 
     public void participateInAuction() {
-        out.println("참가");
-        messageArea.appendText("경매에 참가 요청을 보냈습니다.\n");
+        out.println("응찰");
     }
 
     public void declineAuction() {
-        out.println("불참여");
-        messageArea.appendText("경매에 불참 요청을 보냈습니다.\n");
+        out.println("불응찰");
     }
 
     public void placeBid(int bidAmount) {
         out.println("호가 " + bidAmount);
-        messageArea.appendText("입찰 요청을 보냈습니다: " + bidAmount + "원\n");
     }
 }

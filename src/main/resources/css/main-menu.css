@@ -1,0 +1,45 @@
+.main-bg {
+    -fx-background-image: url(../images/main-menu.jpg);
+    -fx-background-position: center;
+}
+
+.inner-bg {
+    -fx-background-color: rgba(234,234,234,0.6);
+    -fx-background-radius: 10;
+}
+
+.label {
+    -fx-font-weight: bold;
+    -fx-font-size: 14
+}
+
+.button {
+    -fx-cursor: hand;
+    -fx-background-color: rgba(18, 18, 18, 0.5);
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+}
+
+.button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-text-fill: black;
+}
+
+.button-selected {
+
+}
+
+.title {
+    -fx-background-image: url(../images/경매게임2.png);
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    /*-fx-background-color: white;*/
+}
+
+.mv {
+    float: left;
+}
+
+.connection-check {
+    -fx-text-fill: red;
+}
