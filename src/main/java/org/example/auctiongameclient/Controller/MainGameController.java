@@ -342,6 +342,9 @@ public class MainGameController {
         if (msg.startsWith("채팅")) {
             chatManager.receiveChatMessage(msg.substring(2));
 
+        } else if (msg.equals("호가효과음")) {
+            playEffectSound("src/main/resources/effectSounds/betsound.mp3");
+
         } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
             for (int i = 1; i <= 7; i++) {
                 Label countLabel = getLabelForSlot(i);
@@ -410,7 +413,7 @@ public class MainGameController {
             }
 
         } else if(msg.startsWith("스턴건")){
-            mainMessageArea.appendText(msg+"\n");
+            countArea.appendText(msg+"\n");
             bid1Button.setDisable(false);
             bid5Button.setDisable(false);
 
@@ -427,6 +430,7 @@ public class MainGameController {
             countArea.appendText(msg+"\n");// 작은 영역에 텍스트 표시
         }
     }
+
 
     // 아이템 이름에 해당하는 슬롯 번호 매핑
     private Integer getSlotNumberForItem(String itemName) {
@@ -450,6 +454,7 @@ public class MainGameController {
         }
     }
 
+
     // 아이템 슬롯에 아이템 개수 업데이트만 수행
     public void updateItemSlot(int slotNumber, int itemCount) {
         Label countLabel = getLabelForSlot(slotNumber); // 슬롯 번호에 해당하는 레이블 가져오기
@@ -457,6 +462,7 @@ public class MainGameController {
             Platform.runLater(() -> countLabel.setText("x" + itemCount)); // 레이블에 개수 설정
         }
     }
+
 
     // 슬롯 번호에 해당하는 레이블 가져오는 헬퍼 메서드
     private Label getLabelForSlot(int slotNumber) {
@@ -595,5 +601,18 @@ public class MainGameController {
         }
 
     }
+
+
+    // 효과음 재생하는 함수
+    private void playEffectSound(String soundFilePath) {
+        try {
+            Media sound = new Media(new File(soundFilePath).toURI().toString());
+            MediaPlayer effectMediaPlayer = new MediaPlayer(sound);
+            effectMediaPlayer.play(); // 효과음 재생
+        } catch (Exception e) {
+            System.err.println("효과음 재생 중 오류 발생: " + e.getMessage());
+        }
+    }
+
 
 }
