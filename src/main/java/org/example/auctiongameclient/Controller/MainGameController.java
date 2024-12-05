@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import org.example.auctiongameclient.domain.User;
 import org.example.auctiongameclient.domain.UserFactory;
 import org.example.auctiongameclient.utils.UIUtils;
 //
@@ -105,6 +104,8 @@ public class MainGameController {
     private Socket socket;
 
 //    private boolean itemUsed = false;
+    private boolean isAngerActive=false;
+    private boolean isMiracleActive=false;
 
 
     private AuctionManager auctionManager;
@@ -346,6 +347,9 @@ public class MainGameController {
         if (msg.startsWith("채팅")) {
             chatManager.receiveChatMessage(msg.substring(2));
 
+        } else if (msg.equals("호가효과음")) {
+            playEffectSound("src/main/resources/effectSounds/betsound.mp3");
+
         } else if (msg.startsWith("경매를 시작합니다. 경매품목: ")) {
             for (int i = 1; i <= 7; i++) {
                 Label countLabel = getLabelForSlot(i);
@@ -412,9 +416,11 @@ public class MainGameController {
                     System.out.println("Invalid item name: " + itemName); // 디버깅 로그
                 }
             }
+            isAngerActive=false;
+            isMiracleActive=false;
 
         } else if(msg.startsWith("스턴건")){
-            mainMessageArea.appendText(msg+"\n");
+            countArea.appendText(msg+"\n");
             bid1Button.setDisable(false);
             bid5Button.setDisable(false);
 
@@ -487,6 +493,7 @@ public class MainGameController {
         }
     }
 
+
     // 아이템 이름에 해당하는 슬롯 번호 매핑
     private Integer getSlotNumberForItem(String itemName) {
         switch (itemName) {
@@ -509,6 +516,7 @@ public class MainGameController {
         }
     }
 
+
     // 아이템 슬롯에 아이템 개수 업데이트만 수행
     public void updateItemSlot(int slotNumber, int itemCount) {
         Label countLabel = getLabelForSlot(slotNumber); // 슬롯 번호에 해당하는 레이블 가져오기
@@ -516,6 +524,7 @@ public class MainGameController {
             Platform.runLater(() -> countLabel.setText("x" + itemCount)); // 레이블에 개수 설정
         }
     }
+
 
     // 슬롯 번호에 해당하는 레이블 가져오는 헬퍼 메서드
     private Label getLabelForSlot(int slotNumber) {
@@ -551,6 +560,18 @@ public class MainGameController {
         tooltip.setGraphic(imageView);
         Tooltip.install(pane, tooltip);
     }
+
+    //황소의 분노 현재 수 가져오기
+    private int getCurrentItemCount() {
+        Label countLabel = getLabelForSlot(getSlotNumberForItem("황소의 분노"));
+        if (countLabel != null) {
+            String text = countLabel.getText();
+            return Integer.parseInt(text.replace("x", "").trim());
+        }
+        return 0; // 기본값: 0
+    }
+
+
 
     //아이템 클릭 이벤트
     @FXML
@@ -603,6 +624,14 @@ public class MainGameController {
     }
 
     public void itemMiracle() {
+
+        if (isMiracleActive) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("이미 일감호의 기적을 사용하였습니다.");
+            alert.showAndWait();
+            return;
+        }
+
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println("일감호의 기적 사용");
@@ -610,7 +639,8 @@ public class MainGameController {
                 Label countLabel = getLabelForSlot(i);
                 countLabel.setDisable(true);
             }
-
+            isMiracleActive=true;
+            countArea.appendText("아이템 [일감호의 기적]을 사용하였습니다.\n이번 경매픔을 강제로 낙찰받습니다.\n(단, 황소의 분노가 발동된 경우 유찰됨)\n");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -618,10 +648,23 @@ public class MainGameController {
     }
 
     private void itemAnger() {
+        if (isAngerActive) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("이미 황소의분노를 사용하였습니다.");
+            alert.showAndWait();
+            return;
+        }
+
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             out.println("ItemUse;황소의 분노;"+userName);
             System.out.println("ItemUse;황소의 분노;");
+            countArea.appendText("아이템 [황소의 분노]를 사용하였습니다.\n이번 경매는 무조건 유찰됩니다.\n");
+
+            // 아이템 갯수 감소 처리
+            int currentCount = getCurrentItemCount();
+            updateItemSlot(5, currentCount - 1); // 슬롯 번호 5번 (황소의 분노)에 대해 갯수 업데이트
+            isAngerActive=true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -636,6 +679,7 @@ public class MainGameController {
 
             label.setOnMouseClicked(event -> clickTargetUser(event));
             label.setStyle(label.getStyle() + "-fx-background-color: blue;");
+            countArea.appendText("아이템 [스턴건]을 사용하였습니다.\n강제불응찰 시킬 유저[파란색]를 클릭해주세요.\n");
         }
     }
 
@@ -654,5 +698,18 @@ public class MainGameController {
         }
 
     }
+
+
+    // 효과음 재생하는 함수
+    private void playEffectSound(String soundFilePath) {
+        try {
+            Media sound = new Media(new File(soundFilePath).toURI().toString());
+            MediaPlayer effectMediaPlayer = new MediaPlayer(sound);
+            effectMediaPlayer.play(); // 효과음 재생
+        } catch (Exception e) {
+            System.err.println("효과음 재생 중 오류 발생: " + e.getMessage());
+        }
+    }
+
 
 }
