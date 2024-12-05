@@ -1,5 +1,6 @@
 package org.example.auctiongameclient.Controller;
 
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -12,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.auctiongameclient.AuctionManager;
 import org.example.auctiongameclient.ChatManager;
@@ -88,6 +90,8 @@ public class MainGameController {
     @FXML
     private Label itemSlot1Label, itemSlot2Label, itemSlot3Label, itemSlot4Label, itemSlot5Label, itemSlot6Label, itemSlot7Label;
 
+    @FXML
+    private Label winLabel, loseLabel;
 
     private Map<Integer, Pane> itemSlots;
 
@@ -421,6 +425,61 @@ public class MainGameController {
                     label.setStyle(label.getStyle() + "-fx-background-color: lightgray;");
                     break;
                 }
+            }
+        } else if (msg.startsWith("승리자는")) {
+            String winner = msg.substring(5);
+            if (winner.equals(userName)) {
+                mediaPlayer.stop();
+                String path = new File("src/main/resources/bgms/win-soundeffect.mp3").getAbsolutePath();
+                media = new Media(new File(path).toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+                mediaView.setMediaPlayer(mediaPlayer);
+                mediaPlayer.setAutoPlay(true);
+                winLabel.setVisible(true);
+                FadeTransition fade = new FadeTransition();
+                fade.setNode(winLabel);
+                fade.setDuration(Duration.millis(3000));
+//                fade.setCycleCount(TranslateTransition.INDEFINITE);
+                fade.setInterpolator(Interpolator.LINEAR);
+                fade.setFromValue(0);
+                fade.setToValue(1);
+                fade.play();
+                ScaleTransition scale = new ScaleTransition();
+                scale.setNode(winLabel);
+                scale.setDuration(Duration.millis(3000));
+                scale.setCycleCount(TranslateTransition.INDEFINITE);
+                scale.setInterpolator(Interpolator.LINEAR);
+                scale.setByX(1.4f);
+                scale.setByY(1.4f);
+                scale.setToX(1.5f);
+                scale.setToY(1.5f);
+                scale.setAutoReverse(true);
+                scale.play();
+
+            } else {
+                mediaPlayer.stop();
+                String path = new File("src/main/resources/bgms/lose-soundeffect.mp3").getAbsolutePath();
+                media = new Media(new File(path).toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+                mediaView.setMediaPlayer(mediaPlayer);
+                mediaPlayer.setAutoPlay(true);
+                loseLabel.setVisible(true);
+                FadeTransition fade = new FadeTransition();
+                fade.setNode(loseLabel);
+                fade.setDuration(Duration.millis(3000));
+                fade.setCycleCount(TranslateTransition.INDEFINITE);
+                fade.setInterpolator(Interpolator.LINEAR);
+                fade.setFromValue(0);
+                fade.setToValue(1);
+                fade.play();
+                ScaleTransition scale = new ScaleTransition();
+                scale.setNode(loseLabel);
+                scale.setDuration(Duration.millis(1000));
+//                scale.setCycleCount(TranslateTransition.INDEFINITE);
+                scale.setInterpolator(Interpolator.LINEAR);
+                scale.setByX(0.5);
+                scale.setByY(0.5);
+                scale.play();
             }
         }
         else{
