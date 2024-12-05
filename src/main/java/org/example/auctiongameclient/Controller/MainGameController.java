@@ -344,6 +344,9 @@ public class MainGameController {
     }
 
     private void processMessage(String msg) {
+        if(msg.startsWith("낙찰받았습니다. 축하합니다!")){
+            addTextArea(msg);
+        }
         if (msg.startsWith("채팅")) {
             chatManager.receiveChatMessage(msg.substring(2));
 
@@ -709,6 +712,11 @@ public class MainGameController {
         } catch (Exception e) {
             System.err.println("효과음 재생 중 오류 발생: " + e.getMessage());
         }
+    }
+
+    //게임 진행 메세지 표시 영역에 메세지를 추가
+    private void addTextArea(String msg){
+        mainMessageArea.appendText(msg + "\n");
     }
 
 
