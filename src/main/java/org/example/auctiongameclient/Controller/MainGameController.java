@@ -347,6 +347,10 @@ public class MainGameController {
         if(msg.startsWith("낙찰받았습니다. 축하합니다!")){
             addTextArea(msg);
         }
+        else if(msg.startsWith("익명의 유저에게 낙찰되었습니다. 축하드립니다!")){
+            addTextArea(msg);
+        }
+
         if (msg.startsWith("채팅")) {
             chatManager.receiveChatMessage(msg.substring(2));
 
