@@ -435,7 +435,7 @@ public class MainGameController {
                     break;
                 }
             }
-        } else if (msg.startsWith("승리자는")) {
+        } else if (msg.startsWith("메인승리자는")) {
             String winner = msg.substring(5);
             if (winner.equals(userName)) {
                 mediaPlayer.stop();
