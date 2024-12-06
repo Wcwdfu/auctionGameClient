@@ -3,6 +3,7 @@ package org.example.auctiongameclient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.scene.text.Font;
@@ -14,6 +15,7 @@ public class AuctionClientApplication extends Application {
         System.setProperty("prism.lcdtext", "false");
         FXMLLoader fxmlLoader = new FXMLLoader(AuctionClientApplication.class.getResource("connect-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 880, 600);
+        stage.getIcons().add(new Image(getClass().getResource("/icon/bid-icon3.png").toExternalForm()));
         stage.setTitle("경매 게임");
         stage.setScene(scene);
         stage.show();

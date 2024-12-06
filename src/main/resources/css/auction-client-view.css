@@ -53,3 +53,13 @@
 .items {
     -fx-cursor: hand;
 }
+
+.win-popup {
+    -fx-font-size: 60;
+    -fx-text-fill: blue;
+}
+
+.lose-popup {
+    -fx-font-size: 60;
+    -fx-text-fill: red;
+}
