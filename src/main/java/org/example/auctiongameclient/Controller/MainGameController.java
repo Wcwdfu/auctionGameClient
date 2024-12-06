@@ -569,8 +569,8 @@ public class MainGameController {
     }
 
     //황소의 분노 현재 수 가져오기
-    private int getCurrentItemCount() {
-        Label countLabel = getLabelForSlot(getSlotNumberForItem("황소의 분노"));
+    private int getCurrentItemCount(String itemName) {
+        Label countLabel = getLabelForSlot(getSlotNumberForItem(itemName));
         if (countLabel != null) {
             String text = countLabel.getText();
             return Integer.parseInt(text.replace("x", "").trim());
@@ -648,6 +648,8 @@ public class MainGameController {
             }
             isMiracleActive=true;
             countArea.appendText("아이템 [일감호의 기적]을 사용하였습니다.\n이번 경매픔을 강제로 낙찰받습니다.\n(단, 황소의 분노가 발동된 경우 유찰됨)\n");
+            int currentCount = getCurrentItemCount("일감호의 기적");
+            updateItemSlot(4, currentCount - 1);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -669,8 +671,8 @@ public class MainGameController {
             countArea.appendText("아이템 [황소의 분노]를 사용하였습니다.\n이번 경매는 무조건 유찰됩니다.\n");
 
             // 아이템 갯수 감소 처리
-            int currentCount = getCurrentItemCount();
-            updateItemSlot(5, currentCount - 1); // 슬롯 번호 5번 (황소의 분노)에 대해 갯수 업데이트
+            int currentCount = getCurrentItemCount("황소의 분노");
+            updateItemSlot(5, currentCount - 1);
             isAngerActive=true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -687,6 +689,9 @@ public class MainGameController {
             label.setOnMouseClicked(event -> clickTargetUser(event));
             label.setStyle(label.getStyle() + "-fx-background-color: blue;");
             countArea.appendText("아이템 [스턴건]을 사용하였습니다.\n강제불응찰 시킬 유저[파란색]를 클릭해주세요.\n");
+            // 아이템 갯수 감소 처리
+            int currentCount = getCurrentItemCount("스턴건");
+            updateItemSlot(6, currentCount - 1);
         }
     }
 
@@ -717,6 +722,7 @@ public class MainGameController {
             System.err.println("효과음 재생 중 오류 발생: " + e.getMessage());
         }
     }
+
 
     //게임 진행 메세지 표시 영역에 메세지를 추가
     private void addTextArea(String msg){
