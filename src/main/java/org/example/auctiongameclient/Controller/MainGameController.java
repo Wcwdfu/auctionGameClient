@@ -351,6 +351,8 @@ public class MainGameController {
             addTextArea(msg);
         }
 
+
+
         if (msg.startsWith("채팅")) {
             chatManager.receiveChatMessage(msg.substring(2));
 
@@ -374,7 +376,68 @@ public class MainGameController {
 
         } else if (msg.startsWith("메인")) {
             String mainMsg = msg.substring(2);
+
+            if (mainMsg.startsWith("승리자는")) {
+                String winner = msg.substring(5);
+                if (winner.equals(userName)) {
+                    mediaPlayer.stop();
+                    String path = new File("src/main/resources/bgms/win-soundeffect.mp3").getAbsolutePath();
+                    media = new Media(new File(path).toURI().toString());
+                    mediaPlayer = new MediaPlayer(media);
+                    mediaView.setMediaPlayer(mediaPlayer);
+                    mediaPlayer.setAutoPlay(true);
+                    winLabel.setVisible(true);
+                    FadeTransition fade = new FadeTransition();
+                    fade.setNode(winLabel);
+                    fade.setDuration(Duration.millis(3000));
+//                fade.setCycleCount(TranslateTransition.INDEFINITE);
+                    fade.setInterpolator(Interpolator.LINEAR);
+                    fade.setFromValue(0);
+                    fade.setToValue(1);
+                    fade.play();
+                    ScaleTransition scale = new ScaleTransition();
+                    scale.setNode(winLabel);
+                    scale.setDuration(Duration.millis(3000));
+                    scale.setCycleCount(TranslateTransition.INDEFINITE);
+                    scale.setInterpolator(Interpolator.LINEAR);
+                    scale.setByX(1.4f);
+                    scale.setByY(1.4f);
+                    scale.setToX(1.5f);
+                    scale.setToY(1.5f);
+                    scale.setAutoReverse(true);
+                    scale.play();
+
+                } else {
+                    mediaPlayer.stop();
+                    String path = new File("src/main/resources/bgms/lose-soundeffect.mp3").getAbsolutePath();
+                    media = new Media(new File(path).toURI().toString());
+                    mediaPlayer = new MediaPlayer(media);
+                    mediaView.setMediaPlayer(mediaPlayer);
+                    mediaPlayer.setAutoPlay(true);
+                    loseLabel.setVisible(true);
+                    FadeTransition fade = new FadeTransition();
+                    fade.setNode(loseLabel);
+                    fade.setDuration(Duration.millis(3000));
+                    fade.setCycleCount(TranslateTransition.INDEFINITE);
+                    fade.setInterpolator(Interpolator.LINEAR);
+                    fade.setFromValue(0);
+                    fade.setToValue(1);
+                    fade.play();
+                    ScaleTransition scale = new ScaleTransition();
+                    scale.setNode(loseLabel);
+                    scale.setDuration(Duration.millis(1000));
+//                scale.setCycleCount(TranslateTransition.INDEFINITE);
+                    scale.setInterpolator(Interpolator.LINEAR);
+                    scale.setByX(0.5);
+                    scale.setByY(0.5);
+                    scale.play();
+                }
+
+
+            }
             mainMessageArea.appendText(mainMsg + "\n");
+
+
 
         } else if (msg.startsWith("참여명단")) {
             String list = msg.substring(4);
@@ -439,63 +502,7 @@ public class MainGameController {
                     break;
                 }
             }
-        } else if (msg.startsWith("메인승리자는")) {
-            String winner = msg.substring(5);
-            if (winner.equals(userName)) {
-                mediaPlayer.stop();
-                String path = new File("src/main/resources/bgms/win-soundeffect.mp3").getAbsolutePath();
-                media = new Media(new File(path).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-                mediaView.setMediaPlayer(mediaPlayer);
-                mediaPlayer.setAutoPlay(true);
-                winLabel.setVisible(true);
-                FadeTransition fade = new FadeTransition();
-                fade.setNode(winLabel);
-                fade.setDuration(Duration.millis(3000));
-//                fade.setCycleCount(TranslateTransition.INDEFINITE);
-                fade.setInterpolator(Interpolator.LINEAR);
-                fade.setFromValue(0);
-                fade.setToValue(1);
-                fade.play();
-                ScaleTransition scale = new ScaleTransition();
-                scale.setNode(winLabel);
-                scale.setDuration(Duration.millis(3000));
-                scale.setCycleCount(TranslateTransition.INDEFINITE);
-                scale.setInterpolator(Interpolator.LINEAR);
-                scale.setByX(1.4f);
-                scale.setByY(1.4f);
-                scale.setToX(1.5f);
-                scale.setToY(1.5f);
-                scale.setAutoReverse(true);
-                scale.play();
-
-            } else {
-                mediaPlayer.stop();
-                String path = new File("src/main/resources/bgms/lose-soundeffect.mp3").getAbsolutePath();
-                media = new Media(new File(path).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-                mediaView.setMediaPlayer(mediaPlayer);
-                mediaPlayer.setAutoPlay(true);
-                loseLabel.setVisible(true);
-                FadeTransition fade = new FadeTransition();
-                fade.setNode(loseLabel);
-                fade.setDuration(Duration.millis(3000));
-                fade.setCycleCount(TranslateTransition.INDEFINITE);
-                fade.setInterpolator(Interpolator.LINEAR);
-                fade.setFromValue(0);
-                fade.setToValue(1);
-                fade.play();
-                ScaleTransition scale = new ScaleTransition();
-                scale.setNode(loseLabel);
-                scale.setDuration(Duration.millis(1000));
-//                scale.setCycleCount(TranslateTransition.INDEFINITE);
-                scale.setInterpolator(Interpolator.LINEAR);
-                scale.setByX(0.5);
-                scale.setByY(0.5);
-                scale.play();
-            }
-        }
-        else{
+        } else{
             countArea.appendText(msg+"\n");// 작은 영역에 텍스트 표시
         }
     }
