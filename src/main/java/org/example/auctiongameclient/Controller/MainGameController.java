@@ -378,7 +378,8 @@ public class MainGameController {
             String mainMsg = msg.substring(2);
 
             if (mainMsg.startsWith("승리자는")) {
-                String winner = msg.substring(5);
+                int last = mainMsg.indexOf("님");
+                String winner = mainMsg.substring(5, last);
                 if (winner.equals(userName)) {
                     mediaPlayer.stop();
                     String path = new File("src/main/resources/bgms/win-soundeffect.mp3").getAbsolutePath();
